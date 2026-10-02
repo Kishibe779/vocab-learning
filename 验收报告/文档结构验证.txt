@@ -1,0 +1,25 @@
+OpenXML SDK validation: each generated document checked with full SDK; subset XSD failed because its relationships:id import was undeclared; fallback business validation + content preview used.
+WARNINGS (2):
+  [Warning] Orphaned relationship: Id='R7d63b7c1eab2477f' is defined but never referenced
+  [Warning] Orphaned relationship: Id='R4fd72ff4d0404be9' is defined but never referenced
+Validation: PASSED
+
+WARNINGS (2):
+  [Warning] Orphaned relationship: Id='R2838990c4ea14569' is defined but never referenced
+  [Warning] Orphaned relationship: Id='R4965661f081b4c16' is defined but never referenced
+Validation: PASSED
+
+WARNINGS (2):
+  [Warning] Orphaned relationship: Id='Ra3a608c50cd04a69' is defined but never referenced
+  [Warning] Orphaned relationship: Id='R1ebc8686f0d043c0' is defined but never referenced
+Validation: PASSED
+
+WARNINGS (2):
+  [Warning] Orphaned relationship: Id='R20bcc60dfa5a4d54' is defined but never referenced
+  [Warning] Orphaned relationship: Id='R0c3c48439d62475d' is defined but never referenced
+Validation: PASSED
+
+WARNINGS (2):
+  [Warning] Orphaned relationship: Id='R692751df766141a9' is defined but never referenced
+  [Warning] Orphaned relationship: Id='R0e7096dbafd54ce5' is defined but never referenced
+Validation: PASSED

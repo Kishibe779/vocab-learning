@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block title %}学习概览{% endblock %}
+{% block eyebrow %}WORKSPACE / 学习工作台{% endblock %}
+{% block page_title %}让词汇，回到语境里。{% endblock %}
+{% block page_description %}阅读、积累、复习。这里记录你的每一步，而不是一次性的背诵。{% endblock %}
+{% block page_actions %}<a class="button button-primary" href="{% url 'review_list' %}">开始到期复习 <span aria-hidden="true">↗</span></a>{% endblock %}
+{% block content %}
+<section class="overview-ledger" aria-labelledby="overview-title">
+  <h2 class="sr-only" id="overview-title">当前学习统计</h2>
+  <dl>
+    <div><dt>阅读资料</dt><dd>{% firstof stats.paper_count paper_count '0' %}<span>篇</span></dd><a href="{% url 'paper_list' %}">查看资料 <span aria-hidden="true">↗</span></a></div>
+    <div><dt>词汇索引</dt><dd>{% firstof stats.word_count word_count '0' %}<span>词</span></dd><a href="{% url 'word_list' %}">浏览词汇 <span aria-hidden="true">↗</span></a></div>
+    <div><dt>我的学习词表</dt><dd>{% firstof stats.study_count study_count '0' %}<span>词</span></dd><a href="{% url 'study_list' %}">管理词表 <span aria-hidden="true">↗</span></a></div>
+    <div><dt>当前到期</dt><dd>{% firstof stats.due_count due_count '0' %}<span>词</span></dd><a href="{% url 'review_list' %}">进入复习 <span aria-hidden="true">↗</span></a></div>
+  </dl>
+</section>
+<div class="dashboard-grid">
+  <section class="panel" aria-labelledby="recent-papers-title">
+    <div class="section-heading"><div><p class="eyebrow">READING DESK</p><h2 id="recent-papers-title">最近收录的资料</h2></div><a class="quiet-link" href="{% url 'paper_list' %}">全部资料 <span aria-hidden="true">→</span></a></div>
+    <div class="reading-list">
+      {% for paper in recent_papers %}
+      <article class="reading-row"><div class="reading-year">{% if paper.year %}{{ paper.year }}{% else %}—{% endif %}</div><div><p class="item-kicker">{{ paper.get_category_display|default:'阅读资料' }}{% if paper.is_demo %} <span class="badge badge-accent">演示资料</span>{% endif %}</p><h3><a href="{% url 'paper_detail' paper.pk %}">{{ paper.title }}</a></h3><p class="item-meta">来源：{{ paper.source|default:'来源尚未登记' }}</p></div><a class="row-arrow" href="{% url 'paper_detail' paper.pk %}" aria-label="阅读{{ paper.title }}">↗</a></article>
+      {% empty %}
+      <div class="empty-state"><span class="empty-number" lang="en">A blank page.</span><h3>还没有阅读资料</h3><p>{% if is_admin %}录入资料并执行分析后，就可以从文章中整理词汇。{% else %}管理员录入资料后，你可以在这里开始阅读。{% endif %}</p>{% if is_admin %}<a class="button button-outline" href="{% url 'paper_create' %}">录入第一篇资料</a>{% endif %}</div>
+      {% endfor %}
+    </div>
+  </section>
+  <section class="panel" aria-labelledby="recent-reviews-title">
+    <div class="section-heading"><div><p class="eyebrow">MEMORY JOURNAL</p><h2 id="recent-reviews-title">最近复习</h2></div><a class="quiet-link" href="{% url 'review_history' %}">全部记录 <span aria-hidden="true">→</span></a></div>
+    <div class="journal-list">
+      {% for log in recent_reviews %}
+      <article class="journal-row"><div><a class="word-link" lang="en" href="{% url 'word_detail' log.study_item.word.pk %}">{{ log.study_item.word.lemma }}</a><p class="item-meta">{{ log.reviewed_at|date:'m月d日 H:i' }}</p></div><span class="badge">{{ log.get_rating_display }}</span></article>
+      {% empty %}
+      <div class="empty-state"><span class="empty-number" lang="en">Make it stay.</span><h3>还没有复习记录</h3><p>先将词汇加入个人词表，再完成一次到期复习。每次反馈都会留在这里。</p><a class="quiet-link" href="{% url 'word_list' %}">去发现词汇 <span aria-hidden="true">→</span></a></div>
+      {% endfor %}
+    </div>
+  </section>
+</div>
+<aside class="method-note"><span class="method-index" lang="en">METHOD NOTE</span><div><h2>分析有边界，学习有语境。</h2><p>当前分析引擎：{{ analysis_engine_label|default:'本地规则分析引擎' }}。词形归并与词频统计基于规则，不等同于完整语义理解；释义、词根和关联词需由词库或管理员提供。历史对比仅反映已收录资料。</p></div></aside>
+{% endblock %}

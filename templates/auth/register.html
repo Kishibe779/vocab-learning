@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block title %}注册{% endblock %}
+{% block page_header %}{% endblock %}
+{% block content %}
+<div class="auth-layout">
+  <section class="auth-editorial" aria-labelledby="auth-title"><p class="eyebrow">A PERSONAL VOCABULARY NOTEBOOK</p><h1 id="auth-title">为每一个新词，<br>留下下一次相遇。</h1><p class="auth-lead">从文章中发现，从词表中整理，<br>在合适的时刻重新记起。</p><div class="auth-margin-note"><span lang="en">YOUR FIRST PAGE</span><p>建立账号，开始一份长期的词汇笔记。</p></div><p class="auth-disclosure">公开注册仅创建学习者账号，不授予资料管理权限。</p></section>
+  <section class="auth-card" aria-labelledby="register-title"><p class="eyebrow">JOIN LEXIS / 新的开始</p><h2 id="register-title">创建学习者账号</h2><p class="muted">请根据字段提示设置账号与密码。</p><form class="editor-form" method="post" action="{% url 'register' %}">{% csrf_token %}{{ form.as_div }}<button class="button button-primary button-full" type="submit">注册账号 <span aria-hidden="true">→</span></button></form><p class="auth-switch">已有账号？<a href="{% url 'login' %}">返回登录</a></p></section>
+</div>
+{% endblock %}

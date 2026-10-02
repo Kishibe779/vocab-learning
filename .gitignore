@@ -1,0 +1,27 @@
+# 虚拟环境和敏感配置
+.venv/
+.env
+.local-secret
+# Python缓存
+ __pycache__/
+*.py[cod]
+# 本机编辑器配置
+.idea/
+.vscode/
+# 数据库
+*.sqlite3
+*.sqlite3-journal
+*.sqlite3-wal
+*.sqlite3-shm
+# 报告不上传
+/验收报告/
+# 编译产物与运行生成文件
+**/bin/
+**/obj/
+media/
+staticfiles/
+*.log
+# 临时文件
+~$*
+Thumbs.db
+.DS_Store

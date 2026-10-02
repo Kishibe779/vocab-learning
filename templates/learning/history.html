@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block title %}复习记录{% endblock %}
+{% block eyebrow %}MEMORY JOURNAL / 复习记录{% endblock %}
+{% block page_title %}每一次回忆，都留下记录。{% endblock %}
+{% block page_description %}查看你的反馈、等级变化和下次复习安排。这里只展示真实提交的复习记录。{% endblock %}
+{% block page_actions %}<a class="button button-primary" href="{% url 'review_list' %}">返回到期复习 <span aria-hidden="true">↗</span></a>{% endblock %}
+{% block content %}
+<section class="panel table-panel" aria-labelledby="history-title"><div class="section-heading"><div><p class="eyebrow">YOUR REVIEW LOG</p><h2 id="history-title">复习时间线</h2></div><p class="section-aside">等级变化由服务端记录</p></div><div class="table-scroll" role="region" aria-label="个人复习记录" tabindex="0"><table><caption class="sr-only">每次复习的词汇、时间、反馈、等级变化与下次复习时间</caption><thead><tr><th scope="col">词元</th><th scope="col">复习时间</th><th scope="col">反馈</th><th scope="col">等级变化</th><th scope="col">下次复习</th></tr></thead><tbody>{% for log in logs %}<tr><td><a class="word-link" lang="en" href="{% url 'word_detail' log.study_item.word.pk %}">{{ log.study_item.word.lemma }}</a>{% if log.note %}<details class="log-note"><summary>本次笔记</summary><p>{{ log.note|linebreaksbr }}</p></details>{% endif %}</td><td class="numeric nowrap">{{ log.reviewed_at|date:'Y-m-d H:i' }}</td><td><span class="badge">{{ log.get_rating_display }}</span></td><td class="level-change"><span class="numeric">{{ log.previous_level }}</span><span class="muted" aria-label="变为">→</span><strong class="numeric">{{ log.new_level }}</strong></td><td class="numeric nowrap">{{ log.next_review_at|date:'Y-m-d H:i'|default:'尚未安排' }}</td></tr>{% empty %}<tr><td colspan="5"><div class="empty-state"><span class="empty-number" lang="en">One recall at a time.</span><h3>还没有复习记录</h3><p>将词汇加入学习词表并提交一次复习反馈后，记录会自动显示在这里。</p><a class="button button-outline" href="{% url 'review_list' %}">查看到期复习</a></div></td></tr>{% endfor %}</tbody></table></div></section>
+{% endblock %}

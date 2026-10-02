@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block title %}登录{% endblock %}
+{% block page_header %}{% endblock %}
+{% block content %}
+<div class="auth-layout">
+  <section class="auth-editorial" aria-labelledby="auth-title"><p class="eyebrow">READ. CONNECT. REMEMBER.</p><h1 id="auth-title">词汇不是孤岛。<br>记忆，从语境开始。</h1><p class="auth-lead">将阅读里的每一次相遇，<br>整理成属于自己的词汇笔记。</p><div class="auth-margin-note"><span lang="en">LEXIS</span><p>阅读资料 · 词形归并 · 关联词汇 · 间隔复习</p></div><p class="auth-disclosure">本系统采用本地规则分析；原创演示资料不代表真实考研试卷。</p></section>
+  <section class="auth-card" aria-labelledby="login-title"><p class="eyebrow">WELCOME BACK / 欢迎回来</p><h2 id="login-title">登录学习工作台</h2><p class="muted">用你的账号，继续上次的积累。</p><form class="editor-form" method="post" action="{% url 'login' %}">{% csrf_token %}{% if next %}<input type="hidden" name="next" value="{{ next }}">{% endif %}{{ form.as_div }}<button class="button button-primary button-full" type="submit">登录 <span aria-hidden="true">→</span></button></form><p class="auth-switch">还没有账号？<a href="{% url 'register' %}">注册学习者账号</a></p></section>
+</div>
+{% endblock %}

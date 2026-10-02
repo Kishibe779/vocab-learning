@@ -1,0 +1,2557 @@
+{
+  "title": "英语词汇学习与复习管理系统\n软件测试报告",
+  "subtitle": "SQLite隔离自动化测试 · 真实三轮记录及修复回归",
+  "cover": [
+    "课程：《企业课程1-3》",
+    "学期：26—27—1；班级：23220196051-2（具体班级待确认）",
+    "小组成员：姓名、学号待补充；指导教师：待补充",
+    "版本：本地SQLite运行版本；原创演示资料",
+    "报告状态：验收草稿，学校模板及个人信息待补充",
+    "生成日期：2026-10-02"
+  ],
+  "blocks": [
+    {
+      "type": "heading",
+      "text": "6 软件测试与验收记录",
+      "level": 1
+    },
+    {
+      "type": "heading",
+      "text": "6.1 对象、环境与方法",
+      "level": 2
+    },
+    {
+      "type": "paragraph",
+      "text": "测试对象包括模型约束、文本分析、历史范围、资料导入、角色权限、个人词表和复习服务。环境为Windows11、Python3.13、Django5.2系列与SQLite隔离测试数据库；测试运行时禁用本机.env并强制SQLite，避免读取真实密码及修改db.sqlite3。方法包括Django TestCase/Client、算法指定输入输出校验、正常/异常表单、越权请求、事务和幂等用例。执行者标注自动化工具，不冒充三名学生现场执行。"
+    },
+    {
+      "type": "paragraph",
+      "text": "实际执行证据见测试证据目录；以下结果从本次自动化记录提取，不将设计预期直接写作通过。"
+    },
+    {
+      "type": "paragraph",
+      "text": "第1轮：执行60项，结果{'PASS': 59, 'FAIL': 1, 'ERROR': 0, 'NOT_RUN': 0, 'UNKNOWN': 0}，退出码1；时间2026-10-02T03:12:35.799228+00:00。"
+    },
+    {
+      "type": "paragraph",
+      "text": "第2轮：执行60项，结果{'PASS': 59, 'FAIL': 1, 'ERROR': 0, 'NOT_RUN': 0, 'UNKNOWN': 0}，退出码1；时间2026-10-02T03:19:01.702876+00:00。"
+    },
+    {
+      "type": "paragraph",
+      "text": "第3轮：执行60项，结果{'PASS': 60, 'FAIL': 0, 'ERROR': 0, 'NOT_RUN': 0, 'UNKNOWN': 0}，退出码0；时间2026-10-02T03:22:29.513486+00:00。"
+    },
+    {
+      "type": "paragraph",
+      "text": "首轮TC57失败：含短语的同一JSON重复导入被唯一约束误拒绝。第一次补丁仅赋已有主键，Django仍将候选视为新对象，第二轮仍失败。最终修正core/views.py：在已有实例上校验候选字段但不保存，合法重复资料去重，非法字段仍拒绝；第三轮全量回归结果见下表。前两轮失败日志均保留。"
+    },
+    {
+      "type": "table",
+      "headers": [
+        "字段",
+        "内容"
+      ],
+      "rows": [
+        [
+          "编号",
+          "TC01"
+        ],
+        [
+          "功能",
+          "规则词形归一"
+        ],
+        [
+          "操作或输入",
+          "分析 studies studied studying running stopped cities watches；规则引擎"
+        ],
+        [
+          "预期结果",
+          "study=3，run/stop/city/watch各1；规则引擎声明非完整NLP"
+        ],
+        [
+          "实际结果",
+          "实际运行：test_tc01_rule_inflections (core.tests.LexicalAcceptanceTests.test_tc01_rule_inflections) ... ok"
+        ],
+        [
+          "是否通过",
+          "通过"
+        ],
+        [
+          "自动化方法",
+          "core.tests.LexicalAcceptanceTests.test_tc01_rule_inflections"
+        ]
+      ],
+      "widths": [
+        1500,
+        6806
+      ]
+    },
+    {
+      "type": "table",
+      "headers": [
+        "字段",
+        "内容"
+      ],
+      "rows": [
+        [
+          "编号",
+          "TC02"
+        ],
+        [
+          "功能",
+          "不规则词形"
+        ],
+        [
+          "操作或输入",
+          "分析 went gone children women wrote written better best"
+        ],
+        [
+          "预期结果",
+          "go/child/woman/write/good归并且次数正确"
+        ],
+        [
+          "实际结果",
+          "实际运行：test_tc02_irregular_forms (core.tests.LexicalAcceptanceTests.test_tc02_irregular_forms) ... ok"
+        ],
+        [
+          "是否通过",
+          "通过"
+        ],
+        [
+          "自动化方法",
+          "core.tests.LexicalAcceptanceTests.test_tc02_irregular_forms"
+        ]
+      ],
+      "widths": [
+        1500,
+        6806
+      ]
+    },
+    {
+      "type": "table",
+      "headers": [
+        "字段",
+        "内容"
+      ],
+      "rows": [
+        [
+          "编号",
+          "TC03"
+        ],
+        [
+          "功能",
+          "高风险词尾保护"
+        ],
+        [
+          "操作或输入",
+          "分析 analysis business news unknowns high-quality student's"
+        ],
+        [
+          "预期结果",
+          "不误截断analysis/business/news/unknowns；连字符保留；所有格student"
+        ],
+        [
+          "实际结果",
+          "实际运行：test_tc03_conservative_suffixes (core.tests.LexicalAcceptanceTests.test_tc03_conservative_suffixes) ... ok"
+        ],
+        [
+          "是否通过",
+          "通过"
+        ],
+        [
+          "自动化方法",
+          "core.tests.LexicalAcceptanceTests.test_tc03_conservative_suffixes"
+        ]
+      ],
+      "widths": [
+        1500,
+        6806
+      ]
+    },
+    {
+      "type": "table",
+      "headers": [
+        "字段",
+        "内容"
+      ],
+      "rows": [
+        [
+          "编号",
+          "TC04"
+        ],
+        [
+          "功能",
+          "默认停用与缩写"
+        ],
+        [
+          "操作或输入",
+          "分析 The and is was I'M we're don't can't learn Z"
+        ],
+        [
+          "预期结果",
+          "tokens=10，valid=1，仅learn；单字符与缩写排除"
+        ],
+        [
+          "实际结果",
+          "实际运行：test_tc04_default_stops_and_contractions (core.tests.LexicalAcceptanceTests.test_tc04_default_stops_and_contractions) ... ok"
+        ],
+        [
+          "是否通过",
+          "通过"
+        ],
+        [
+          "自动化方法",
+          "core.tests.LexicalAcceptanceTests.test_tc04_default_stops_and_contractions"
+        ]
+      ],
+      "widths": [
+        1500,
+        6806
+      ]
+    },
+    {
+      "type": "table",
+      "headers": [
+        "字段",
+        "内容"
+      ],
+      "rows": [
+        [
+          "编号",
+          "TC05"
+        ],
+        [
+          "功能",
+          "大小写/原词形/词频"
+        ],
+        [
+          "操作或输入",
+          "分析 Learn LEARN learning. Research research."
+        ],
+        [
+          "预期结果",
+          "tokens=valid=5；learn=3 research=2；保留原大小写forms"
+        ],
+        [
+          "实际结果",
+          "实际运行：test_tc05_case_forms_frequency (core.tests.LexicalAcceptanceTests.test_tc05_case_forms_frequency) ... ok"
+        ],
+        [
+          "是否通过",
+          "通过"
+        ],
+        [
+          "自动化方法",
+          "core.tests.LexicalAcceptanceTests.test_tc05_case_forms_frequency"
+        ]
+      ],
+      "widths": [
+        1500,
+        6806
+      ]
+    },
+    {
+      "type": "table",
+      "headers": [
+        "字段",
+        "内容"
+      ],
+      "rows": [
+        [
+          "编号",
+          "TC06"
+        ],
+        [
+          "功能",
+          "自定义停用归一"
+        ],
+        [
+          "操作或输入",
+          "stop_words=[' Studies ','RESEARCH']；分析study studies studying research learn"
+        ],
+        [
+          "预期结果",
+          "停用词及其基本词形均排除，仅learn"
+        ],
+        [
+          "实际结果",
+          "实际运行：test_tc06_custom_stop_normalization (core.tests.LexicalAcceptanceTests.test_tc06_custom_stop_normalization) ... ok"
+        ],
+        [
+          "是否通过",
+          "通过"
+        ],
+        [
+          "自动化方法",
+          "core.tests.LexicalAcceptanceTests.test_tc06_custom_stop_normalization"
+        ]
+      ],
+      "widths": [
+        1500,
+        6806
+      ]
+    },
+    {
+      "type": "table",
+      "headers": [
+        "字段",
+        "内容"
+      ],
+      "rows": [
+        [
+          "编号",
+          "TC07"
+        ],
+        [
+          "功能",
+          "上下文去重上限"
+        ],
+        [
+          "操作或输入",
+          "同一词learn跨四个不同句子，并重复第一句；分析600字符长句"
+        ],
+        [
+          "预期结果",
+          "上下文不重复最多3条；每条<=500字符"
+        ],
+        [
+          "实际结果",
+          "实际运行：test_tc07_context_limits (core.tests.LexicalAcceptanceTests.test_tc07_context_limits) ... ok"
+        ],
+        [
+          "是否通过",
+          "通过"
+        ],
+        [
+          "自动化方法",
+          "core.tests.LexicalAcceptanceTests.test_tc07_context_limits"
+        ]
+      ],
+      "widths": [
+        1500,
+        6806
+      ]
+    },
+    {
+      "type": "table",
+      "headers": [
+        "字段",
+        "内容"
+      ],
+      "rows": [
+        [
+          "编号",
+          "TC08"
+        ],
+        [
+          "功能",
+          "分析输入异常"
+        ],
+        [
+          "操作或输入",
+          "传入bytes、纯中文、200001字符、101字符词形、无效Unicode"
+        ],
+        [
+          "预期结果",
+          "各项ValidationError，不发生写库"
+        ],
+        [
+          "实际结果",
+          "实际运行：test_tc08_lexical_invalid_inputs (core.tests.LexicalAcceptanceTests.test_tc08_lexical_invalid_inputs) ... ok"
+        ],
+        [
+          "是否通过",
+          "通过"
+        ],
+        [
+          "自动化方法",
+          "core.tests.LexicalAcceptanceTests.test_tc08_lexical_invalid_inputs"
+        ]
+      ],
+      "widths": [
+        1500,
+        6806
+      ]
+    },
+    {
+      "type": "table",
+      "headers": [
+        "字段",
+        "内容"
+      ],
+      "rows": [
+        [
+          "编号",
+          "TC09"
+        ],
+        [
+          "功能",
+          "分析持久化"
+        ],
+        [
+          "操作或输入",
+          "管理员分析含learn/learning和the的已保存试卷"
+        ],
+        [
+          "预期结果",
+          "Paper状态analyzed、时间/计数正确；PaperWord计数forms/context/total_tokens持久化"
+        ],
+        [
+          "实际结果",
+          "实际运行：test_tc09_analysis_persistence (core.tests.LexicalAcceptanceTests.test_tc09_analysis_persistence) ... ok"
+        ],
+        [
+          "是否通过",
+          "通过"
+        ],
+        [
+          "自动化方法",
+          "core.tests.LexicalAcceptanceTests.test_tc09_analysis_persistence"
+        ]
+      ],
+      "widths": [
+        1500,
+        6806
+      ]
+    },
+    {
+      "type": "table",
+      "headers": [
+        "字段",
+        "内容"
+      ],
+      "rows": [
+        [
+          "编号",
+          "TC10"
+        ],
+        [
+          "功能",
+          "重复分析去重"
+        ],
+        [
+          "操作或输入",
+          "同一试卷连续分析两次；词库已有人工释义"
+        ],
+        [
+          "预期结果",
+          "词库和PaperWord不重复；计数不累加；已有释义保留"
+        ],
+        [
+          "实际结果",
+          "实际运行：test_tc10_repeat_analysis_deduplicates (core.tests.LexicalAcceptanceTests.test_tc10_repeat_analysis_deduplicates) ... ok"
+        ],
+        [
+          "是否通过",
+          "通过"
+        ],
+        [
+          "自动化方法",
+          "core.tests.LexicalAcceptanceTests.test_tc10_repeat_analysis_deduplicates"
+        ]
+      ],
+      "widths": [
+        1500,
+        6806
+      ]
+    },
+    {
+      "type": "table",
+      "headers": [
+        "字段",
+        "内容"
+      ],
+      "rows": [
+        [
+          "编号",
+          "TC11"
+        ],
+        [
+          "功能",
+          "分析权限"
+        ],
+        [
+          "操作或输入",
+          "学生、匿名、停用管理员调用analyze_paper；学生POST分析接口"
+        ],
+        [
+          "预期结果",
+          "服务PermissionDenied/HTTP403，无词频写入"
+        ],
+        [
+          "实际结果",
+          "实际运行：test_tc11_analysis_permission (core.tests.LexicalAcceptanceTests.test_tc11_analysis_permission) ... ok"
+        ],
+        [
+          "是否通过",
+          "通过"
+        ],
+        [
+          "自动化方法",
+          "core.tests.LexicalAcceptanceTests.test_tc11_analysis_permission"
+        ]
+      ],
+      "widths": [
+        1500,
+        6806
+      ]
+    },
+    {
+      "type": "table",
+      "headers": [
+        "字段",
+        "内容"
+      ],
+      "rows": [
+        [
+          "编号",
+          "TC12"
+        ],
+        [
+          "功能",
+          "停用启停生效"
+        ],
+        [
+          "操作或输入",
+          "启用study停用规则分析study/learn；关闭规则再分析"
+        ],
+        [
+          "预期结果",
+          "启用只learn；关闭后study恢复；重新分析替换结果"
+        ],
+        [
+          "实际结果",
+          "实际运行：test_tc12_stopword_enabled_disabled (core.tests.LexicalAcceptanceTests.test_tc12_stopword_enabled_disabled) ... ok"
+        ],
+        [
+          "是否通过",
+          "通过"
+        ],
+        [
+          "自动化方法",
+          "core.tests.LexicalAcceptanceTests.test_tc12_stopword_enabled_disabled"
+        ]
+      ],
+      "widths": [
+        1500,
+        6806
+      ]
+    },
+    {
+      "type": "table",
+      "headers": [
+        "字段",
+        "内容"
+      ],
+      "rows": [
+        [
+          "编号",
+          "TC13"
+        ],
+        [
+          "功能",
+          "分析失败不破坏原结果"
+        ],
+        [
+          "操作或输入",
+          "已分析试卷输入失效正文；另用过期对象与数据库已修改正文比较"
+        ],
+        [
+          "预期结果",
+          "两种情况均ValidationError，原状态和PaperWord完整保留"
+        ],
+        [
+          "实际结果",
+          "实际运行：test_tc13_analysis_failure_preserves_previous (core.tests.LexicalAcceptanceTests.test_tc13_analysis_failure_preserves_previous) ... ok"
+        ],
+        [
+          "是否通过",
+          "通过"
+        ],
+        [
+          "自动化方法",
+          "core.tests.LexicalAcceptanceTests.test_tc13_analysis_failure_preserves_previous"
+        ]
+      ],
+      "widths": [
+        1500,
+        6806
+      ]
+    },
+    {
+      "type": "table",
+      "headers": [
+        "字段",
+        "内容"
+      ],
+      "rows": [
+        [
+          "编号",
+          "TC14"
+        ],
+        [
+          "功能",
+          "严格历史年份/类别/演示标记"
+        ],
+        [
+          "操作或输入",
+          "当前2025英语一非演示；加入2024同类、2025同年、2026未来、英语二、演示、未分析等资料"
+        ],
+        [
+          "预期结果",
+          "仅2024同类同标记已分析入基线；learn历史频2；research新词"
+        ],
+        [
+          "实际结果",
+          "实际运行：test_tc14_strict_history_scope (core.tests.HistoryAcceptanceTests.test_tc14_strict_history_scope) ... ok"
+        ],
+        [
+          "是否通过",
+          "通过"
+        ],
+        [
+          "自动化方法",
+          "core.tests.HistoryAcceptanceTests.test_tc14_strict_history_scope"
+        ]
+      ],
+      "widths": [
+        1500,
+        6806
+      ]
+    },
+    {
+      "type": "table",
+      "headers": [
+        "字段",
+        "内容"
+      ],
+      "rows": [
+        [
+          "编号",
+          "TC15"
+        ],
+        [
+          "功能",
+          "演示历史分离"
+        ],
+        [
+          "操作或输入",
+          "当前演示资料；历史同年类别内分别演示/非演示"
+        ],
+        [
+          "预期结果",
+          "只比较历史演示资料，非演示不混入"
+        ],
+        [
+          "实际结果",
+          "实际运行：test_tc15_demo_scope (core.tests.HistoryAcceptanceTests.test_tc15_demo_scope) ... ok"
+        ],
+        [
+          "是否通过",
+          "通过"
+        ],
+        [
+          "自动化方法",
+          "core.tests.HistoryAcceptanceTests.test_tc15_demo_scope"
+        ]
+      ],
+      "widths": [
+        1500,
+        6806
+      ]
+    },
+    {
+      "type": "table",
+      "headers": [
+        "字段",
+        "内容"
+      ],
+      "rows": [
+        [
+          "编号",
+          "TC16"
+        ],
+        [
+          "功能",
+          "历史范围/汇总频率"
+        ],
+        [
+          "操作或输入",
+          "2021/2022/2023历史learn次数1/2/3，当前2025；范围2022至2023"
+        ],
+        [
+          "预期结果",
+          "包含两个边界年；history_count=2，learn历史合计5"
+        ],
+        [
+          "实际结果",
+          "实际运行：test_tc16_history_range_aggregation (core.tests.HistoryAcceptanceTests.test_tc16_history_range_aggregation) ... ok"
+        ],
+        [
+          "是否通过",
+          "通过"
+        ],
+        [
+          "自动化方法",
+          "core.tests.HistoryAcceptanceTests.test_tc16_history_range_aggregation"
+        ]
+      ],
+      "widths": [
+        1500,
+        6806
+      ]
+    },
+    {
+      "type": "table",
+      "headers": [
+        "字段",
+        "内容"
+      ],
+      "rows": [
+        [
+          "编号",
+          "TC17"
+        ],
+        [
+          "功能",
+          "无效历史年份"
+        ],
+        [
+          "操作或输入",
+          "起始大于结束、非整数、布尔、浮点输入；Client非法年份GET"
+        ],
+        [
+          "预期结果",
+          "服务ValidationError；页面重定向至详情，不报500"
+        ],
+        [
+          "实际结果",
+          "实际运行：test_tc17_invalid_history_years (core.tests.HistoryAcceptanceTests.test_tc17_invalid_history_years) ... ok"
+        ],
+        [
+          "是否通过",
+          "通过"
+        ],
+        [
+          "自动化方法",
+          "core.tests.HistoryAcceptanceTests.test_tc17_invalid_history_years"
+        ]
+      ],
+      "widths": [
+        1500,
+        6806
+      ]
+    },
+    {
+      "type": "table",
+      "headers": [
+        "字段",
+        "内容"
+      ],
+      "rows": [
+        [
+          "编号",
+          "TC18"
+        ],
+        [
+          "功能",
+          "未分析拒绝对比"
+        ],
+        [
+          "操作或输入",
+          "保存draft资料后服务对比及Client GET对比"
+        ],
+        [
+          "预期结果",
+          "服务ValidationError；页面重定向；无伪造统计"
+        ],
+        [
+          "实际结果",
+          "实际运行：test_tc18_draft_comparison_rejected (core.tests.HistoryAcceptanceTests.test_tc18_draft_comparison_rejected) ... ok"
+        ],
+        [
+          "是否通过",
+          "通过"
+        ],
+        [
+          "自动化方法",
+          "core.tests.HistoryAcceptanceTests.test_tc18_draft_comparison_rejected"
+        ]
+      ],
+      "widths": [
+        1500,
+        6806
+      ]
+    },
+    {
+      "type": "table",
+      "headers": [
+        "字段",
+        "内容"
+      ],
+      "rows": [
+        [
+          "编号",
+          "TC19"
+        ],
+        [
+          "功能",
+          "无历史基线"
+        ],
+        [
+          "操作或输入",
+          "仅当前已分析资料且有learn/research；Client查看对比"
+        ],
+        [
+          "预期结果",
+          "history_count=0，历史频0，新词2；明确无基线不证明普遍新词"
+        ],
+        [
+          "实际结果",
+          "实际运行：test_tc19_no_history_baseline (core.tests.HistoryAcceptanceTests.test_tc19_no_history_baseline) ... ok"
+        ],
+        [
+          "是否通过",
+          "通过"
+        ],
+        [
+          "自动化方法",
+          "core.tests.HistoryAcceptanceTests.test_tc19_no_history_baseline"
+        ]
+      ],
+      "widths": [
+        1500,
+        6806
+      ]
+    },
+    {
+      "type": "table",
+      "headers": [
+        "字段",
+        "内容"
+      ],
+      "rows": [
+        [
+          "编号",
+          "TC20"
+        ],
+        [
+          "功能",
+          "注册不能提权"
+        ],
+        [
+          "操作或输入",
+          "匿名注册，额外传role=admin/is_staff/is_superuser/groups等权限字段（随机合成密码，不记录）"
+        ],
+        [
+          "预期结果",
+          "注册成功，但role=student、staff/superuser均False、无权限组"
+        ],
+        [
+          "实际结果",
+          "实际运行：test_tc20_registration_no_privilege_escalation (core.tests.AuthorizationAcceptanceTests.test_tc20_registration_no_privilege_escalation) ... ok"
+        ],
+        [
+          "是否通过",
+          "通过"
+        ],
+        [
+          "自动化方法",
+          "core.tests.AuthorizationAcceptanceTests.test_tc20_registration_no_privilege_escalation"
+        ]
+      ],
+      "widths": [
+        1500,
+        6806
+      ]
+    },
+    {
+      "type": "table",
+      "headers": [
+        "字段",
+        "内容"
+      ],
+      "rows": [
+        [
+          "编号",
+          "TC21"
+        ],
+        [
+          "功能",
+          "匿名登录保护"
+        ],
+        [
+          "操作或输入",
+          "匿名GET资料/词库/生词/复习/历史/管理页面；POST加入生词"
+        ],
+        [
+          "预期结果",
+          "均302转登录，未生成学习项目"
+        ],
+        [
+          "实际结果",
+          "实际运行：test_tc21_anonymous_login_required (core.tests.AuthorizationAcceptanceTests.test_tc21_anonymous_login_required) ... ok"
+        ],
+        [
+          "是否通过",
+          "通过"
+        ],
+        [
+          "自动化方法",
+          "core.tests.AuthorizationAcceptanceTests.test_tc21_anonymous_login_required"
+        ]
+      ],
+      "widths": [
+        1500,
+        6806
+      ]
+    },
+    {
+      "type": "table",
+      "headers": [
+        "字段",
+        "内容"
+      ],
+      "rows": [
+        [
+          "编号",
+          "TC22"
+        ],
+        [
+          "功能",
+          "学生管理接口拒绝"
+        ],
+        [
+          "操作或输入",
+          "学生访问/POST试卷新增编辑分析、词汇新增编辑关联短语例句、导入、停用新增启停及Django后台"
+        ],
+        [
+          "预期结果",
+          "管理接口403；后台转登录；无新增词条或停用改动"
+        ],
+        [
+          "实际结果",
+          "实际运行：test_tc22_student_management_denied (core.tests.AuthorizationAcceptanceTests.test_tc22_student_management_denied) ... ok"
+        ],
+        [
+          "是否通过",
+          "通过"
+        ],
+        [
+          "自动化方法",
+          "core.tests.AuthorizationAcceptanceTests.test_tc22_student_management_denied"
+        ]
+      ],
+      "widths": [
+        1500,
+        6806
+      ]
+    },
+    {
+      "type": "table",
+      "headers": [
+        "字段",
+        "内容"
+      ],
+      "rows": [
+        [
+          "编号",
+          "TC23"
+        ],
+        [
+          "功能",
+          "管理员词库CRUD"
+        ],
+        [
+          "操作或输入",
+          "管理员Client新增LEARN、读取详情、编辑释义；Django后台删除无引用词汇"
+        ],
+        [
+          "预期结果",
+          "词元小写learn，数据读改成功，后台确认删除后词条不存在"
+        ],
+        [
+          "实际结果",
+          "实际运行：test_tc23_admin_word_crud (core.tests.AuthorizationAcceptanceTests.test_tc23_admin_word_crud) ... ok"
+        ],
+        [
+          "是否通过",
+          "通过"
+        ],
+        [
+          "自动化方法",
+          "core.tests.AuthorizationAcceptanceTests.test_tc23_admin_word_crud"
+        ]
+      ],
+      "widths": [
+        1500,
+        6806
+      ]
+    },
+    {
+      "type": "table",
+      "headers": [
+        "字段",
+        "内容"
+      ],
+      "rows": [
+        [
+          "编号",
+          "TC24"
+        ],
+        [
+          "功能",
+          "管理员试卷CRUD"
+        ],
+        [
+          "操作或输入",
+          "Client新增试卷/查看/编辑标题；Django后台确认删除"
+        ],
+        [
+          "预期结果",
+          "创建人管理员，内容保存，标题更新，删除成功"
+        ],
+        [
+          "实际结果",
+          "实际运行：test_tc24_admin_paper_crud (core.tests.AuthorizationAcceptanceTests.test_tc24_admin_paper_crud) ... ok"
+        ],
+        [
+          "是否通过",
+          "通过"
+        ],
+        [
+          "自动化方法",
+          "core.tests.AuthorizationAcceptanceTests.test_tc24_admin_paper_crud"
+        ]
+      ],
+      "widths": [
+        1500,
+        6806
+      ]
+    },
+    {
+      "type": "table",
+      "headers": [
+        "字段",
+        "内容"
+      ],
+      "rows": [
+        [
+          "编号",
+          "TC25"
+        ],
+        [
+          "功能",
+          "编辑正文使分析失效"
+        ],
+        [
+          "操作或输入",
+          "先分析；仅改标题，再改正文"
+        ],
+        [
+          "预期结果",
+          "标题修改保留统计；正文修改置draft、清零/清分析时间并删除旧PaperWord"
+        ],
+        [
+          "实际结果",
+          "实际运行：test_tc25_content_edit_invalidates_analysis (core.tests.AuthorizationAcceptanceTests.test_tc25_content_edit_invalidates_analysis) ... ok"
+        ],
+        [
+          "是否通过",
+          "通过"
+        ],
+        [
+          "自动化方法",
+          "core.tests.AuthorizationAcceptanceTests.test_tc25_content_edit_invalidates_analysis"
+        ]
+      ],
+      "widths": [
+        1500,
+        6806
+      ]
+    },
+    {
+      "type": "table",
+      "headers": [
+        "字段",
+        "内容"
+      ],
+      "rows": [
+        [
+          "编号",
+          "TC26"
+        ],
+        [
+          "功能",
+          "管理员关联/短语/例句与停用管理"
+        ],
+        [
+          "操作或输入",
+          "新增词关联、短语、对应短语例句；创建大写STUDY停用词并关闭"
+        ],
+        [
+          "预期结果",
+          "关联/短语/例句保存；停用小写study且创建人为管理员；关闭成功"
+        ],
+        [
+          "实际结果",
+          "实际运行：test_tc26_admin_related_material_and_stopwords (core.tests.AuthorizationAcceptanceTests.test_tc26_admin_related_material_and_stopwords) ... ok"
+        ],
+        [
+          "是否通过",
+          "通过"
+        ],
+        [
+          "自动化方法",
+          "core.tests.AuthorizationAcceptanceTests.test_tc26_admin_related_material_and_stopwords"
+        ]
+      ],
+      "widths": [
+        1500,
+        6806
+      ]
+    },
+    {
+      "type": "table",
+      "headers": [
+        "字段",
+        "内容"
+      ],
+      "rows": [
+        [
+          "编号",
+          "TC27"
+        ],
+        [
+          "功能",
+          "只读HTTP方法保护"
+        ],
+        [
+          "操作或输入",
+          "管理员GET分析/停用切换；学生GET加入/移除/提交复习"
+        ],
+        [
+          "预期结果",
+          "所有变更接口405，不写入和删除"
+        ],
+        [
+          "实际结果",
+          "实际运行：test_tc27_mutations_require_post (core.tests.AuthorizationAcceptanceTests.test_tc27_mutations_require_post) ... ok"
+        ],
+        [
+          "是否通过",
+          "通过"
+        ],
+        [
+          "自动化方法",
+          "core.tests.AuthorizationAcceptanceTests.test_tc27_mutations_require_post"
+        ]
+      ],
+      "widths": [
+        1500,
+        6806
+      ]
+    },
+    {
+      "type": "table",
+      "headers": [
+        "字段",
+        "内容"
+      ],
+      "rows": [
+        [
+          "编号",
+          "TC28"
+        ],
+        [
+          "功能",
+          "关联与例句一致性校验"
+        ],
+        [
+          "操作或输入",
+          "提交自身关联；将其他单词短语用于当前词例句"
+        ],
+        [
+          "预期结果",
+          "表单HTTP200带错误；无WordRelation/UsageExample写入"
+        ],
+        [
+          "实际结果",
+          "实际运行：test_tc28_related_material_validation (core.tests.AuthorizationAcceptanceTests.test_tc28_related_material_validation) ... ok"
+        ],
+        [
+          "是否通过",
+          "通过"
+        ],
+        [
+          "自动化方法",
+          "core.tests.AuthorizationAcceptanceTests.test_tc28_related_material_validation"
+        ]
+      ],
+      "widths": [
+        1500,
+        6806
+      ]
+    },
+    {
+      "type": "table",
+      "headers": [
+        "字段",
+        "内容"
+      ],
+      "rows": [
+        [
+          "编号",
+          "TC29"
+        ],
+        [
+          "功能",
+          "个人学习去重"
+        ],
+        [
+          "操作或输入",
+          "同用户同词add_to_study两次；另一个用户同词添加"
+        ],
+        [
+          "预期结果",
+          "前者created=True/False且同一pk；第二用户独立项目，共2条"
+        ],
+        [
+          "实际结果",
+          "实际运行：test_tc29_personal_deduplication (core.tests.PersonalStudyAcceptanceTests.test_tc29_personal_deduplication) ... ok"
+        ],
+        [
+          "是否通过",
+          "通过"
+        ],
+        [
+          "自动化方法",
+          "core.tests.PersonalStudyAcceptanceTests.test_tc29_personal_deduplication"
+        ]
+      ],
+      "widths": [
+        1500,
+        6806
+      ]
+    },
+    {
+      "type": "table",
+      "headers": [
+        "字段",
+        "内容"
+      ],
+      "rows": [
+        [
+          "编号",
+          "TC30"
+        ],
+        [
+          "功能",
+          "加入来源验证及去重"
+        ],
+        [
+          "操作或输入",
+          "词learn属于paper1不属于paper2；先错来源再正确两次POST"
+        ],
+        [
+          "预期结果",
+          "错来源不加入；正确来源保存paper1且重复不增行"
+        ],
+        [
+          "实际结果",
+          "实际运行：test_tc30_study_source_validation (core.tests.PersonalStudyAcceptanceTests.test_tc30_study_source_validation) ... ok"
+        ],
+        [
+          "是否通过",
+          "通过"
+        ],
+        [
+          "自动化方法",
+          "core.tests.PersonalStudyAcceptanceTests.test_tc30_study_source_validation"
+        ]
+      ],
+      "widths": [
+        1500,
+        6806
+      ]
+    },
+    {
+      "type": "table",
+      "headers": [
+        "字段",
+        "内容"
+      ],
+      "rows": [
+        [
+          "编号",
+          "TC31"
+        ],
+        [
+          "功能",
+          "个人列表/详情/仪表盘隔离"
+        ],
+        [
+          "操作或输入",
+          "用户甲learn且有review，用户乙research且有review；登录甲读取列表/仪表盘/词详情"
+        ],
+        [
+          "预期结果",
+          "只含甲项目和甲日志；乙词详情study_item为None"
+        ],
+        [
+          "实际结果",
+          "实际运行：test_tc31_personal_read_isolation (core.tests.PersonalStudyAcceptanceTests.test_tc31_personal_read_isolation) ... ok"
+        ],
+        [
+          "是否通过",
+          "通过"
+        ],
+        [
+          "自动化方法",
+          "core.tests.PersonalStudyAcceptanceTests.test_tc31_personal_read_isolation"
+        ]
+      ],
+      "widths": [
+        1500,
+        6806
+      ]
+    },
+    {
+      "type": "table",
+      "headers": [
+        "字段",
+        "内容"
+      ],
+      "rows": [
+        [
+          "编号",
+          "TC32"
+        ],
+        [
+          "功能",
+          "个人项目移除与越权拒绝"
+        ],
+        [
+          "操作或输入",
+          "甲POST移除乙项目再移除本人已有日志项目"
+        ],
+        [
+          "预期结果",
+          "越权404乙项目保留；本人移除成功且其日志级联删除"
+        ],
+        [
+          "实际结果",
+          "实际运行：test_tc32_remove_ownership_and_cascade (core.tests.PersonalStudyAcceptanceTests.test_tc32_remove_ownership_and_cascade) ... ok"
+        ],
+        [
+          "是否通过",
+          "通过"
+        ],
+        [
+          "自动化方法",
+          "core.tests.PersonalStudyAcceptanceTests.test_tc32_remove_ownership_and_cascade"
+        ]
+      ],
+      "widths": [
+        1500,
+        6806
+      ]
+    },
+    {
+      "type": "table",
+      "headers": [
+        "字段",
+        "内容"
+      ],
+      "rows": [
+        [
+          "编号",
+          "TC33"
+        ],
+        [
+          "功能",
+          "到期列表隔离与UUID"
+        ],
+        [
+          "操作或输入",
+          "甲到期与未来项目、乙到期项目；登录甲GET复习"
+        ],
+        [
+          "预期结果",
+          "只返回甲到期项目；review_token为合法UUID；due_count=1"
+        ],
+        [
+          "实际结果",
+          "实际运行：test_tc33_due_list_isolation_and_uuid (core.tests.PersonalStudyAcceptanceTests.test_tc33_due_list_isolation_and_uuid) ... ok"
+        ],
+        [
+          "是否通过",
+          "通过"
+        ],
+        [
+          "自动化方法",
+          "core.tests.PersonalStudyAcceptanceTests.test_tc33_due_list_isolation_and_uuid"
+        ]
+      ],
+      "widths": [
+        1500,
+        6806
+      ]
+    },
+    {
+      "type": "table",
+      "headers": [
+        "字段",
+        "内容"
+      ],
+      "rows": [
+        [
+          "编号",
+          "TC34"
+        ],
+        [
+          "功能",
+          "未到期拒绝复习"
+        ],
+        [
+          "操作或输入",
+          "未来1天学习项目submit_review及Client POST有效UUID/good"
+        ],
+        [
+          "预期结果",
+          "服务ValidationError；接口返回提示；等级/到期不变且无日志"
+        ],
+        [
+          "实际结果",
+          "实际运行：test_tc34_not_due_review_rejected (core.tests.PersonalStudyAcceptanceTests.test_tc34_not_due_review_rejected) ... ok"
+        ],
+        [
+          "是否通过",
+          "通过"
+        ],
+        [
+          "自动化方法",
+          "core.tests.PersonalStudyAcceptanceTests.test_tc34_not_due_review_rejected"
+        ]
+      ],
+      "widths": [
+        1500,
+        6806
+      ]
+    },
+    {
+      "type": "table",
+      "headers": [
+        "字段",
+        "内容"
+      ],
+      "rows": [
+        [
+          "编号",
+          "TC35"
+        ],
+        [
+          "功能",
+          "复习四种评分/上限与日志"
+        ],
+        [
+          "操作或输入",
+          "固定当前时间；again前4、hard前3、good前0/4、easy前3/5逐项复习"
+        ],
+        [
+          "预期结果",
+          "等级0/2/1/5/5/5；间隔10分钟/1/1/30/30/30天；level>=4掌握；日志前后等级/时间一致"
+        ],
+        [
+          "实际结果",
+          "实际运行：test_tc35_review_rating_schedule_and_logs (core.tests.PersonalStudyAcceptanceTests.test_tc35_review_rating_schedule_and_logs) ... ok"
+        ],
+        [
+          "是否通过",
+          "通过"
+        ],
+        [
+          "自动化方法",
+          "core.tests.PersonalStudyAcceptanceTests.test_tc35_review_rating_schedule_and_logs"
+        ]
+      ],
+      "widths": [
+        1500,
+        6806
+      ]
+    },
+    {
+      "type": "table",
+      "headers": [
+        "字段",
+        "内容"
+      ],
+      "rows": [
+        [
+          "编号",
+          "TC36"
+        ],
+        [
+          "功能",
+          "无效评分/UUID/编号/备注"
+        ],
+        [
+          "操作或输入",
+          "invalid评分、无效UUID、负数/布尔/浮点编号、过长/非文本note；接口缺少token"
+        ],
+        [
+          "预期结果",
+          "全部拒绝，不改变项目且不生成日志；接口提示提交标识无效"
+        ],
+        [
+          "实际结果",
+          "实际运行：test_tc36_invalid_review_inputs (core.tests.PersonalStudyAcceptanceTests.test_tc36_invalid_review_inputs) ... ok"
+        ],
+        [
+          "是否通过",
+          "通过"
+        ],
+        [
+          "自动化方法",
+          "core.tests.PersonalStudyAcceptanceTests.test_tc36_invalid_review_inputs"
+        ]
+      ],
+      "widths": [
+        1500,
+        6806
+      ]
+    },
+    {
+      "type": "table",
+      "headers": [
+        "字段",
+        "内容"
+      ],
+      "rows": [
+        [
+          "编号",
+          "TC37"
+        ],
+        [
+          "功能",
+          "复习UUID重试幂等"
+        ],
+        [
+          "操作或输入",
+          "到期项目以相同UUID/good连续提交两次；第二次虽未来到期"
+        ],
+        [
+          "预期结果",
+          "返回同一ReviewLog；仅一次等级推进且日志1条"
+        ],
+        [
+          "实际结果",
+          "实际运行：test_tc37_review_idempotency (core.tests.PersonalStudyAcceptanceTests.test_tc37_review_idempotency) ... ok"
+        ],
+        [
+          "是否通过",
+          "通过"
+        ],
+        [
+          "自动化方法",
+          "core.tests.PersonalStudyAcceptanceTests.test_tc37_review_idempotency"
+        ]
+      ],
+      "widths": [
+        1500,
+        6806
+      ]
+    },
+    {
+      "type": "table",
+      "headers": [
+        "字段",
+        "内容"
+      ],
+      "rows": [
+        [
+          "编号",
+          "TC38"
+        ],
+        [
+          "功能",
+          "UUID绑定用户/项目/评分"
+        ],
+        [
+          "操作或输入",
+          "已使用UUID重新用于不同评分、另一个本人项目、另用户项目"
+        ],
+        [
+          "预期结果",
+          "均ValidationError；不生成新日志、不推进其他项目"
+        ],
+        [
+          "实际结果",
+          "实际运行：test_tc38_uuid_bound_to_request (core.tests.PersonalStudyAcceptanceTests.test_tc38_uuid_bound_to_request) ... ok"
+        ],
+        [
+          "是否通过",
+          "通过"
+        ],
+        [
+          "自动化方法",
+          "core.tests.PersonalStudyAcceptanceTests.test_tc38_uuid_bound_to_request"
+        ]
+      ],
+      "widths": [
+        1500,
+        6806
+      ]
+    },
+    {
+      "type": "table",
+      "headers": [
+        "字段",
+        "内容"
+      ],
+      "rows": [
+        [
+          "编号",
+          "TC39"
+        ],
+        [
+          "功能",
+          "复习越权"
+        ],
+        [
+          "操作或输入",
+          "甲通过服务及Client提交乙的学习项目"
+        ],
+        [
+          "预期结果",
+          "服务PermissionDenied/接口404；乙项目等级不变，无日志"
+        ],
+        [
+          "实际结果",
+          "实际运行：test_tc39_review_other_owner_denied (core.tests.PersonalStudyAcceptanceTests.test_tc39_review_other_owner_denied) ... ok"
+        ],
+        [
+          "是否通过",
+          "通过"
+        ],
+        [
+          "自动化方法",
+          "core.tests.PersonalStudyAcceptanceTests.test_tc39_review_other_owner_denied"
+        ]
+      ],
+      "widths": [
+        1500,
+        6806
+      ]
+    },
+    {
+      "type": "table",
+      "headers": [
+        "字段",
+        "内容"
+      ],
+      "rows": [
+        [
+          "编号",
+          "TC40"
+        ],
+        [
+          "功能",
+          "个人复习日志隔离"
+        ],
+        [
+          "操作或输入",
+          "甲learn、乙research各复习一条；登录甲读取历史"
+        ],
+        [
+          "预期结果",
+          "history只包含甲日志和词条，乙备注不出现在HTML"
+        ],
+        [
+          "实际结果",
+          "实际运行：test_tc40_history_isolation (core.tests.PersonalStudyAcceptanceTests.test_tc40_history_isolation) ... ok"
+        ],
+        [
+          "是否通过",
+          "通过"
+        ],
+        [
+          "自动化方法",
+          "core.tests.PersonalStudyAcceptanceTests.test_tc40_history_isolation"
+        ]
+      ],
+      "widths": [
+        1500,
+        6806
+      ]
+    },
+    {
+      "type": "table",
+      "headers": [
+        "字段",
+        "内容"
+      ],
+      "rows": [
+        [
+          "编号",
+          "TC41"
+        ],
+        [
+          "功能",
+          "加入学习回跳安全"
+        ],
+        [
+          "操作或输入",
+          "return_to外部URL、//外部、反斜杠路径及合法/study/"
+        ],
+        [
+          "预期结果",
+          "危险回跳都回词详情；合法本站路径正常跳转"
+        ],
+        [
+          "实际结果",
+          "实际运行：test_tc41_safe_return_redirect (core.tests.PersonalStudyAcceptanceTests.test_tc41_safe_return_redirect) ... ok"
+        ],
+        [
+          "是否通过",
+          "通过"
+        ],
+        [
+          "自动化方法",
+          "core.tests.PersonalStudyAcceptanceTests.test_tc41_safe_return_redirect"
+        ]
+      ],
+      "widths": [
+        1500,
+        6806
+      ]
+    },
+    {
+      "type": "table",
+      "headers": [
+        "字段",
+        "内容"
+      ],
+      "rows": [
+        [
+          "编号",
+          "TC42"
+        ],
+        [
+          "功能",
+          "UTF-8 TXT成功上传"
+        ],
+        [
+          "操作或输入",
+          "管理员上传UTF-8 BOM的fixture.TXT，正文留空"
+        ],
+        [
+          "预期结果",
+          "创建draft资料，去BOM/首尾空白，文本保存且无磁盘媒体文件"
+        ],
+        [
+          "实际结果",
+          "实际运行：test_tc42_txt_utf8_bom_success (core.tests.ImportAndSecurityAcceptanceTests.test_tc42_txt_utf8_bom_success) ... ok"
+        ],
+        [
+          "是否通过",
+          "通过"
+        ],
+        [
+          "自动化方法",
+          "core.tests.ImportAndSecurityAcceptanceTests.test_tc42_txt_utf8_bom_success"
+        ]
+      ],
+      "widths": [
+        1500,
+        6806
+      ]
+    },
+    {
+      "type": "table",
+      "headers": [
+        "字段",
+        "内容"
+      ],
+      "rows": [
+        [
+          "编号",
+          "TC43"
+        ],
+        [
+          "功能",
+          "TXT异常与正文互斥"
+        ],
+        [
+          "操作或输入",
+          "上传pdf扩展、非UTF8、空文件、中文、含NUL、超1MB、超20万字符、同时粘贴正文"
+        ],
+        [
+          "预期结果",
+          "各自表单错误HTTP200，不创建试卷"
+        ],
+        [
+          "实际结果",
+          "实际运行：test_tc43_txt_invalid_uploads (core.tests.ImportAndSecurityAcceptanceTests.test_tc43_txt_invalid_uploads) ... ok"
+        ],
+        [
+          "是否通过",
+          "通过"
+        ],
+        [
+          "自动化方法",
+          "core.tests.ImportAndSecurityAcceptanceTests.test_tc43_txt_invalid_uploads"
+        ]
+      ],
+      "widths": [
+        1500,
+        6806
+      ]
+    },
+    {
+      "type": "table",
+      "headers": [
+        "字段",
+        "内容"
+      ],
+      "rows": [
+        [
+          "编号",
+          "TC44"
+        ],
+        [
+          "功能",
+          "试卷年份/类别边界"
+        ],
+        [
+          "操作或输入",
+          "表单传1899/2101年份、非法category及合法1900/2100"
+        ],
+        [
+          "预期结果",
+          "非法拒绝，两个年份边界合法"
+        ],
+        [
+          "实际结果",
+          "实际运行：test_tc44_paper_form_year_category (core.tests.ImportAndSecurityAcceptanceTests.test_tc44_paper_form_year_category) ... ok"
+        ],
+        [
+          "是否通过",
+          "通过"
+        ],
+        [
+          "自动化方法",
+          "core.tests.ImportAndSecurityAcceptanceTests.test_tc44_paper_form_year_category"
+        ]
+      ],
+      "widths": [
+        1500,
+        6806
+      ]
+    },
+    {
+      "type": "table",
+      "headers": [
+        "字段",
+        "内容"
+      ],
+      "rows": [
+        [
+          "编号",
+          "TC45"
+        ],
+        [
+          "功能",
+          "JSON批量完整导入"
+        ],
+        [
+          "操作或输入",
+          "导入learn/study，含前向同义关联、短语、例句与来源"
+        ],
+        [
+          "预期结果",
+          "词条2条、关联/短语/例句各1条，释义/来源/关联目标持久化"
+        ],
+        [
+          "实际结果",
+          "实际运行：test_tc45_json_import_success (core.tests.ImportAndSecurityAcceptanceTests.test_tc45_json_import_success) ... ok"
+        ],
+        [
+          "是否通过",
+          "通过"
+        ],
+        [
+          "自动化方法",
+          "core.tests.ImportAndSecurityAcceptanceTests.test_tc45_json_import_success"
+        ]
+      ],
+      "widths": [
+        1500,
+        6806
+      ]
+    },
+    {
+      "type": "table",
+      "headers": [
+        "字段",
+        "内容"
+      ],
+      "rows": [
+        [
+          "编号",
+          "TC46"
+        ],
+        [
+          "功能",
+          "JSON错误整批回滚"
+        ],
+        [
+          "操作或输入",
+          "已有learn旧释义；导入修改learn并新增study；前段短语/例句成功后第二词关联不存在"
+        ],
+        [
+          "预期结果",
+          "HTTP200表单错误；旧释义恢复；新增词/关联/短语/例句全部回滚"
+        ],
+        [
+          "实际结果",
+          "实际运行：test_tc46_json_import_transaction_rollback (core.tests.ImportAndSecurityAcceptanceTests.test_tc46_json_import_transaction_rollback) ... ok"
+        ],
+        [
+          "是否通过",
+          "通过"
+        ],
+        [
+          "自动化方法",
+          "core.tests.ImportAndSecurityAcceptanceTests.test_tc46_json_import_transaction_rollback"
+        ]
+      ],
+      "widths": [
+        1500,
+        6806
+      ]
+    },
+    {
+      "type": "table",
+      "headers": [
+        "字段",
+        "内容"
+      ],
+      "rows": [
+        [
+          "编号",
+          "TC47"
+        ],
+        [
+          "功能",
+          "JSON结构/编码/限制异常"
+        ],
+        [
+          "操作或输入",
+          "空数组/对象、未知字段、无source、大写lemma、非数组relations、错误扩展/JSON/UTF8及超1MB"
+        ],
+        [
+          "预期结果",
+          "全部返回表单错误HTTP200，无词条写入"
+        ],
+        [
+          "实际结果",
+          "实际运行：test_tc47_json_invalid_inputs (core.tests.ImportAndSecurityAcceptanceTests.test_tc47_json_invalid_inputs) ... ok"
+        ],
+        [
+          "是否通过",
+          "通过"
+        ],
+        [
+          "自动化方法",
+          "core.tests.ImportAndSecurityAcceptanceTests.test_tc47_json_invalid_inputs"
+        ]
+      ],
+      "widths": [
+        1500,
+        6806
+      ]
+    },
+    {
+      "type": "table",
+      "headers": [
+        "字段",
+        "内容"
+      ],
+      "rows": [
+        [
+          "编号",
+          "TC48"
+        ],
+        [
+          "功能",
+          "JSON嵌套约束失败回滚"
+        ],
+        [
+          "操作或输入",
+          "自关联、未知嵌套字段、缺短语释义、超长pos、非对象例句分别导入"
+        ],
+        [
+          "预期结果",
+          "均表单错误HTTP200；每批没有残留Word/Relation/Phrase/Example"
+        ],
+        [
+          "实际结果",
+          "实际运行：test_tc48_json_nested_constraint_rollback (core.tests.ImportAndSecurityAcceptanceTests.test_tc48_json_nested_constraint_rollback) ... ok"
+        ],
+        [
+          "是否通过",
+          "通过"
+        ],
+        [
+          "自动化方法",
+          "core.tests.ImportAndSecurityAcceptanceTests.test_tc48_json_nested_constraint_rollback"
+        ]
+      ],
+      "widths": [
+        1500,
+        6806
+      ]
+    },
+    {
+      "type": "table",
+      "headers": [
+        "字段",
+        "内容"
+      ],
+      "rows": [
+        [
+          "编号",
+          "TC49"
+        ],
+        [
+          "功能",
+          "CSRF保护与合法提交"
+        ],
+        [
+          "操作或输入",
+          "enforce_csrf_checks=True学生Client；不带token POST加入；GET词详情取得token后携token重试"
+        ],
+        [
+          "预期结果",
+          "无token403无写入；合法token302且新增本人学习项目"
+        ],
+        [
+          "实际结果",
+          "实际运行：test_tc49_csrf_enforced (core.tests.ImportAndSecurityAcceptanceTests.test_tc49_csrf_enforced) ... ok"
+        ],
+        [
+          "是否通过",
+          "通过"
+        ],
+        [
+          "自动化方法",
+          "core.tests.ImportAndSecurityAcceptanceTests.test_tc49_csrf_enforced"
+        ]
+      ],
+      "widths": [
+        1500,
+        6806
+      ]
+    },
+    {
+      "type": "table",
+      "headers": [
+        "字段",
+        "内容"
+      ],
+      "rows": [
+        [
+          "编号",
+          "TC50"
+        ],
+        [
+          "功能",
+          "HTML正文/词库转义"
+        ],
+        [
+          "操作或输入",
+          "paper标题正文和Word释义/notes、Phrase/Example写入script/img合成标记；Client读取"
+        ],
+        [
+          "预期结果",
+          "HTML不出现原始可执行标记；显示&lt;转义文本"
+        ],
+        [
+          "实际结果",
+          "实际运行：test_tc50_html_escaping (core.tests.ImportAndSecurityAcceptanceTests.test_tc50_html_escaping) ... ok"
+        ],
+        [
+          "是否通过",
+          "通过"
+        ],
+        [
+          "自动化方法",
+          "core.tests.ImportAndSecurityAcceptanceTests.test_tc50_html_escaping"
+        ]
+      ],
+      "widths": [
+        1500,
+        6806
+      ]
+    },
+    {
+      "type": "table",
+      "headers": [
+        "字段",
+        "内容"
+      ],
+      "rows": [
+        [
+          "编号",
+          "TC51"
+        ],
+        [
+          "功能",
+          "复习备注HTML转义"
+        ],
+        [
+          "操作或输入",
+          "合成script备注随复习提交，Client读取本人复习历史"
+        ],
+        [
+          "预期结果",
+          "日志存储原文，页面仅显示转义文本，无可执行script"
+        ],
+        [
+          "实际结果",
+          "实际运行：test_tc51_review_note_escaped (core.tests.ImportAndSecurityAcceptanceTests.test_tc51_review_note_escaped) ... ok"
+        ],
+        [
+          "是否通过",
+          "通过"
+        ],
+        [
+          "自动化方法",
+          "core.tests.ImportAndSecurityAcceptanceTests.test_tc51_review_note_escaped"
+        ]
+      ],
+      "widths": [
+        1500,
+        6806
+      ]
+    },
+    {
+      "type": "table",
+      "headers": [
+        "字段",
+        "内容"
+      ],
+      "rows": [
+        [
+          "编号",
+          "TC52"
+        ],
+        [
+          "功能",
+          "模型各表至少6字段"
+        ],
+        [
+          "操作或输入",
+          "遍历core所有模型，用数据库introspection核实字段及关联真实表"
+        ],
+        [
+          "预期结果",
+          "core模型10张表，逐表>=6个实际数据库列；记录每表字段清单"
+        ],
+        [
+          "实际结果",
+          "实际运行：test_tc52_model_tables_field_counts (core.tests.ImportAndSecurityAcceptanceTests.test_tc52_model_tables_field_counts) ... ok"
+        ],
+        [
+          "是否通过",
+          "通过"
+        ],
+        [
+          "自动化方法",
+          "core.tests.ImportAndSecurityAcceptanceTests.test_tc52_model_tables_field_counts"
+        ]
+      ],
+      "widths": [
+        1500,
+        6806
+      ]
+    },
+    {
+      "type": "table",
+      "headers": [
+        "字段",
+        "内容"
+      ],
+      "rows": [
+        [
+          "编号",
+          "TC53"
+        ],
+        [
+          "功能",
+          "SQLite测试库隔离"
+        ],
+        [
+          "操作或输入",
+          "检查测试运行时connection.settings_dict及SQLite database_list"
+        ],
+        [
+          "预期结果",
+          "SQLite引擎，数据库file:memorydb测试库或:memory:，绝非真实db.sqlite3"
+        ],
+        [
+          "实际结果",
+          "实际运行：test_tc53_sqlite_test_database_isolated (core.tests.ImportAndSecurityAcceptanceTests.test_tc53_sqlite_test_database_isolated) ... ok"
+        ],
+        [
+          "是否通过",
+          "通过"
+        ],
+        [
+          "自动化方法",
+          "core.tests.ImportAndSecurityAcceptanceTests.test_tc53_sqlite_test_database_isolated"
+        ]
+      ],
+      "widths": [
+        1500,
+        6806
+      ]
+    },
+    {
+      "type": "table",
+      "headers": [
+        "字段",
+        "内容"
+      ],
+      "rows": [
+        [
+          "编号",
+          "TC54"
+        ],
+        [
+          "功能",
+          "Client分析POST和词频读取"
+        ],
+        [
+          "操作或输入",
+          "管理员POST分析；学生读取详情并检索learn"
+        ],
+        [
+          "预期结果",
+          "分析成功302，学生看见learn=2；过滤仅返回learn，不需管理员权限"
+        ],
+        [
+          "实际结果",
+          "实际运行：test_tc54_analysis_http_and_search (core.tests.ImportAndSecurityAcceptanceTests.test_tc54_analysis_http_and_search) ... ok"
+        ],
+        [
+          "是否通过",
+          "通过"
+        ],
+        [
+          "自动化方法",
+          "core.tests.ImportAndSecurityAcceptanceTests.test_tc54_analysis_http_and_search"
+        ]
+      ],
+      "widths": [
+        1500,
+        6806
+      ]
+    },
+    {
+      "type": "table",
+      "headers": [
+        "字段",
+        "内容"
+      ],
+      "rows": [
+        [
+          "编号",
+          "TC55"
+        ],
+        [
+          "功能",
+          "Client复习提交与重试"
+        ],
+        [
+          "操作或输入",
+          "学生POST有效UUID/good/备注，再以idempotency_key兼容字段重试"
+        ],
+        [
+          "预期结果",
+          "两次302；一条日志；等级只推进一次；备注保存"
+        ],
+        [
+          "实际结果",
+          "实际运行：test_tc55_review_http_idempotency (core.tests.ImportAndSecurityAcceptanceTests.test_tc55_review_http_idempotency) ... ok"
+        ],
+        [
+          "是否通过",
+          "通过"
+        ],
+        [
+          "自动化方法",
+          "core.tests.ImportAndSecurityAcceptanceTests.test_tc55_review_http_idempotency"
+        ]
+      ],
+      "widths": [
+        1500,
+        6806
+      ]
+    },
+    {
+      "type": "table",
+      "headers": [
+        "字段",
+        "内容"
+      ],
+      "rows": [
+        [
+          "编号",
+          "TC56"
+        ],
+        [
+          "功能",
+          "词汇查询与学习筛选"
+        ],
+        [
+          "操作或输入",
+          "词库按中文释义查询；本人new/learning项目按状态及关键词过滤"
+        ],
+        [
+          "预期结果",
+          "词库仅匹配research；学习列表仅本人指定状态与关键词项目"
+        ],
+        [
+          "实际结果",
+          "实际运行：test_tc56_search_and_study_filters (core.tests.ImportAndSecurityAcceptanceTests.test_tc56_search_and_study_filters) ... ok"
+        ],
+        [
+          "是否通过",
+          "通过"
+        ],
+        [
+          "自动化方法",
+          "core.tests.ImportAndSecurityAcceptanceTests.test_tc56_search_and_study_filters"
+        ]
+      ],
+      "widths": [
+        1500,
+        6806
+      ]
+    },
+    {
+      "type": "table",
+      "headers": [
+        "字段",
+        "内容"
+      ],
+      "rows": [
+        [
+          "编号",
+          "TC57"
+        ],
+        [
+          "功能",
+          "JSON再次导入资料去重"
+        ],
+        [
+          "操作或输入",
+          "同一包含短语及例句的JSON完整导入两次；再重复导入已有短语但传空释义"
+        ],
+        [
+          "预期结果",
+          "两次合法导入均成功且Word/Phrase/Example各1条；非法重复资料仍验证且整批回滚、不覆盖原资料"
+        ],
+        [
+          "实际结果",
+          "实际运行：test_tc57_json_reimport_deduplication (core.tests.ImportAndSecurityAcceptanceTests.test_tc57_json_reimport_deduplication) ... ok"
+        ],
+        [
+          "是否通过",
+          "通过"
+        ],
+        [
+          "自动化方法",
+          "core.tests.ImportAndSecurityAcceptanceTests.test_tc57_json_reimport_deduplication"
+        ]
+      ],
+      "widths": [
+        1500,
+        6806
+      ]
+    },
+    {
+      "type": "table",
+      "headers": [
+        "字段",
+        "内容"
+      ],
+      "rows": [
+        [
+          "编号",
+          "TC58"
+        ],
+        [
+          "功能",
+          "同年资料不能互为历史"
+        ],
+        [
+          "操作或输入",
+          "两份2025同类别均分析learn；对第二份比较"
+        ],
+        [
+          "预期结果",
+          "同年第一份排除，history_count=0，历史频0"
+        ],
+        [
+          "实际结果",
+          "实际运行：test_tc58_same_year_not_history (core.tests.ImportAndSecurityAcceptanceTests.test_tc58_same_year_not_history) ... ok"
+        ],
+        [
+          "是否通过",
+          "通过"
+        ],
+        [
+          "自动化方法",
+          "core.tests.ImportAndSecurityAcceptanceTests.test_tc58_same_year_not_history"
+        ]
+      ],
+      "widths": [
+        1500,
+        6806
+      ]
+    },
+    {
+      "type": "table",
+      "headers": [
+        "字段",
+        "内容"
+      ],
+      "rows": [
+        [
+          "编号",
+          "TC59"
+        ],
+        [
+          "功能",
+          "全停用正文分析"
+        ],
+        [
+          "操作或输入",
+          "管理员分析the and was，并与无历史基线比较"
+        ],
+        [
+          "预期结果",
+          "tokens=3/valid=words=0，仍标记已分析，无空白词条；比较结果0行"
+        ],
+        [
+          "实际结果",
+          "实际运行：test_tc59_all_stop_words (core.tests.ImportAndSecurityAcceptanceTests.test_tc59_all_stop_words) ... ok"
+        ],
+        [
+          "是否通过",
+          "通过"
+        ],
+        [
+          "自动化方法",
+          "core.tests.ImportAndSecurityAcceptanceTests.test_tc59_all_stop_words"
+        ]
+      ],
+      "widths": [
+        1500,
+        6806
+      ]
+    },
+    {
+      "type": "table",
+      "headers": [
+        "字段",
+        "内容"
+      ],
+      "rows": [
+        [
+          "编号",
+          "TC60"
+        ],
+        [
+          "功能",
+          "个人学习服务拒绝无效用户"
+        ],
+        [
+          "操作或输入",
+          "匿名/停用用户添加已保存词；有效用户添加未保存词"
+        ],
+        [
+          "预期结果",
+          "无效用户PermissionDenied；未保存词ValidationError；无学习记录"
+        ],
+        [
+          "实际结果",
+          "实际运行：test_tc60_study_service_invalid_user_word (core.tests.ImportAndSecurityAcceptanceTests.test_tc60_study_service_invalid_user_word) ... ok"
+        ],
+        [
+          "是否通过",
+          "通过"
+        ],
+        [
+          "自动化方法",
+          "core.tests.ImportAndSecurityAcceptanceTests.test_tc60_study_service_invalid_user_word"
+        ]
+      ],
+      "widths": [
+        1500,
+        6806
+      ]
+    },
+    {
+      "type": "paragraph",
+      "text": "结果汇总以原始运行日志和自动测试记录为准。未通过项及修正说明随测试证据保留；即使自动化通过，也不能替代MySQL专项、浏览器设备操作和教师现场抽查。"
+    },
+    {
+      "type": "heading",
+      "text": "6.2 未执行项与验收限制",
+      "level": 2
+    },
+    {
+      "type": "table",
+      "headers": [
+        "检查",
+        "状态",
+        "原因/后续"
+      ],
+      "rows": [
+        [
+          "MySQL实际连接、迁移及行锁",
+          "未执行",
+          "当前SQLite运行；需要有效独立数据库配置"
+        ],
+        [
+          "WordNet语料及全量词形准确性",
+          "未执行",
+          "当前rule；尚未提供词典语料和完整金标准"
+        ],
+        [
+          "浏览器多设备视觉/交互",
+          "待人工复核",
+          "本轮后端自动化不能替代真实设备截图"
+        ],
+        [
+          "教师现场主要功能抽查",
+          "待执行",
+          "由教师现场验证"
+        ],
+        [
+          "学校报告模板对齐",
+          "待提供模板",
+          "目前为规范A4学术草稿，不冒称学校指定格式"
+        ],
+        [
+          "真实考研语料覆盖",
+          "待补资料",
+          "原创演示不能代替授权真题历史库"
+        ]
+      ]
+    }
+  ]
+}

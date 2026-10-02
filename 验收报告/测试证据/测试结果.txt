@@ -1,0 +1,353 @@
+Django 验收自动测试完整实际记录
+实际测试者：Claude Code 自动化工具；A/B/C为报告测试分组，非3名学生人工执行。
+隔离：PYTHON_DOTENV_DISABLED=1; DB_ENGINE=sqlite; ANALYSIS_ENGINE=rule; PYTHONDONTWRITEBYTECODE=1
+未读取.env秘密、既有账号密码；未连接真实db.sqlite3；不安装、不联网、不使用浏览器。
+
+===== RUN 1 =====
+开始：2026-10-02T03:12:33.244166+00:00
+命令：E:\CompanyCourse\vocab_learning\.venv\Scripts\python.exe manage.py test core --verbosity 2
+版本：{"python": "3.13.7", "django": "5.2.17", "sqlite": "3.50.4", "interpreter": "E:\\CompanyCourse\\vocab_learning\\.venv\\Scripts\\python.exe"}
+===== 完整实际 STDOUT =====
+Found 60 test(s).
+Operations to perform:
+  Synchronize unmigrated apps: messages, staticfiles
+  Apply all migrations: admin, auth, contenttypes, core, sessions
+Synchronizing apps without migrations:
+  Creating tables...
+    Running deferred SQL...
+Running migrations:
+  Applying contenttypes.0001_initial... OK
+  Applying contenttypes.0002_remove_content_type_name... OK
+  Applying auth.0001_initial... OK
+  Applying auth.0002_alter_permission_name_max_length... OK
+  Applying auth.0003_alter_user_email_max_length... OK
+  Applying auth.0004_alter_user_username_opts... OK
+  Applying auth.0005_alter_user_last_login_null... OK
+  Applying auth.0006_require_contenttypes_0002... OK
+  Applying auth.0007_alter_validators_add_error_messages... OK
+  Applying auth.0008_alter_user_username_max_length... OK
+  Applying auth.0009_alter_user_last_name_max_length... OK
+  Applying auth.0010_alter_group_name_max_length... OK
+  Applying auth.0011_update_proxy_permissions... OK
+  Applying auth.0012_alter_user_first_name_max_length... OK
+  Applying core.0001_initial... OK
+  Applying admin.0001_initial... OK
+  Applying admin.0002_logentry_remove_auto_add... OK
+  Applying admin.0003_logentry_add_action_flag_choices... OK
+  Applying core.0002_alter_stopword_text_alter_word_lemma... OK
+  Applying sessions.0001_initial... OK
+System check identified no issues (0 silenced).
+
+===== 完整实际 STDERR =====
+Creating test database for alias 'default' ('file:memorydb_default?mode=memory&cache=shared')...
+test_tc20_registration_no_privilege_escalation (core.tests.AuthorizationAcceptanceTests.test_tc20_registration_no_privilege_escalation) ... ok
+test_tc21_anonymous_login_required (core.tests.AuthorizationAcceptanceTests.test_tc21_anonymous_login_required) ... ok
+test_tc22_student_management_denied (core.tests.AuthorizationAcceptanceTests.test_tc22_student_management_denied) ... ok
+test_tc23_admin_word_crud (core.tests.AuthorizationAcceptanceTests.test_tc23_admin_word_crud) ... ok
+test_tc24_admin_paper_crud (core.tests.AuthorizationAcceptanceTests.test_tc24_admin_paper_crud) ... ok
+test_tc25_content_edit_invalidates_analysis (core.tests.AuthorizationAcceptanceTests.test_tc25_content_edit_invalidates_analysis) ... ok
+test_tc26_admin_related_material_and_stopwords (core.tests.AuthorizationAcceptanceTests.test_tc26_admin_related_material_and_stopwords) ... ok
+test_tc27_mutations_require_post (core.tests.AuthorizationAcceptanceTests.test_tc27_mutations_require_post) ... ok
+test_tc28_related_material_validation (core.tests.AuthorizationAcceptanceTests.test_tc28_related_material_validation) ... ok
+test_tc14_strict_history_scope (core.tests.HistoryAcceptanceTests.test_tc14_strict_history_scope) ... ok
+test_tc15_demo_scope (core.tests.HistoryAcceptanceTests.test_tc15_demo_scope) ... ok
+test_tc16_history_range_aggregation (core.tests.HistoryAcceptanceTests.test_tc16_history_range_aggregation) ... ok
+test_tc17_invalid_history_years (core.tests.HistoryAcceptanceTests.test_tc17_invalid_history_years) ... ok
+test_tc18_draft_comparison_rejected (core.tests.HistoryAcceptanceTests.test_tc18_draft_comparison_rejected) ... ok
+test_tc19_no_history_baseline (core.tests.HistoryAcceptanceTests.test_tc19_no_history_baseline) ... ok
+test_tc42_txt_utf8_bom_success (core.tests.ImportAndSecurityAcceptanceTests.test_tc42_txt_utf8_bom_success) ... ok
+test_tc43_txt_invalid_uploads (core.tests.ImportAndSecurityAcceptanceTests.test_tc43_txt_invalid_uploads) ... ok
+test_tc44_paper_form_year_category (core.tests.ImportAndSecurityAcceptanceTests.test_tc44_paper_form_year_category) ... ok
+test_tc45_json_import_success (core.tests.ImportAndSecurityAcceptanceTests.test_tc45_json_import_success) ... ok
+test_tc46_json_import_transaction_rollback (core.tests.ImportAndSecurityAcceptanceTests.test_tc46_json_import_transaction_rollback) ... ok
+test_tc47_json_invalid_inputs (core.tests.ImportAndSecurityAcceptanceTests.test_tc47_json_invalid_inputs) ... ok
+test_tc48_json_nested_constraint_rollback (core.tests.ImportAndSecurityAcceptanceTests.test_tc48_json_nested_constraint_rollback) ... ok
+test_tc49_csrf_enforced (core.tests.ImportAndSecurityAcceptanceTests.test_tc49_csrf_enforced) ... ok
+test_tc50_html_escaping (core.tests.ImportAndSecurityAcceptanceTests.test_tc50_html_escaping) ... ok
+test_tc51_review_note_escaped (core.tests.ImportAndSecurityAcceptanceTests.test_tc51_review_note_escaped) ... ok
+test_tc52_model_tables_field_counts (core.tests.ImportAndSecurityAcceptanceTests.test_tc52_model_tables_field_counts) ... ok
+test_tc53_sqlite_test_database_isolated (core.tests.ImportAndSecurityAcceptanceTests.test_tc53_sqlite_test_database_isolated) ... ok
+test_tc54_analysis_http_and_search (core.tests.ImportAndSecurityAcceptanceTests.test_tc54_analysis_http_and_search) ... ok
+test_tc55_review_http_idempotency (core.tests.ImportAndSecurityAcceptanceTests.test_tc55_review_http_idempotency) ... ok
+test_tc56_search_and_study_filters (core.tests.ImportAndSecurityAcceptanceTests.test_tc56_search_and_study_filters) ... ok
+test_tc57_json_reimport_deduplication (core.tests.ImportAndSecurityAcceptanceTests.test_tc57_json_reimport_deduplication) ... 
+  test_tc57_json_reimport_deduplication (core.tests.ImportAndSecurityAcceptanceTests.test_tc57_json_reimport_deduplication) (attempt=2) ... FAIL
+test_tc58_same_year_not_history (core.tests.ImportAndSecurityAcceptanceTests.test_tc58_same_year_not_history) ... ok
+test_tc59_all_stop_words (core.tests.ImportAndSecurityAcceptanceTests.test_tc59_all_stop_words) ... ok
+test_tc60_study_service_invalid_user_word (core.tests.ImportAndSecurityAcceptanceTests.test_tc60_study_service_invalid_user_word) ... ok
+test_tc01_rule_inflections (core.tests.LexicalAcceptanceTests.test_tc01_rule_inflections) ... ok
+test_tc02_irregular_forms (core.tests.LexicalAcceptanceTests.test_tc02_irregular_forms) ... ok
+test_tc03_conservative_suffixes (core.tests.LexicalAcceptanceTests.test_tc03_conservative_suffixes) ... ok
+test_tc04_default_stops_and_contractions (core.tests.LexicalAcceptanceTests.test_tc04_default_stops_and_contractions) ... ok
+test_tc05_case_forms_frequency (core.tests.LexicalAcceptanceTests.test_tc05_case_forms_frequency) ... ok
+test_tc06_custom_stop_normalization (core.tests.LexicalAcceptanceTests.test_tc06_custom_stop_normalization) ... ok
+test_tc07_context_limits (core.tests.LexicalAcceptanceTests.test_tc07_context_limits) ... ok
+test_tc08_lexical_invalid_inputs (core.tests.LexicalAcceptanceTests.test_tc08_lexical_invalid_inputs) ... ok
+test_tc09_analysis_persistence (core.tests.LexicalAcceptanceTests.test_tc09_analysis_persistence) ... ok
+test_tc10_repeat_analysis_deduplicates (core.tests.LexicalAcceptanceTests.test_tc10_repeat_analysis_deduplicates) ... ok
+test_tc11_analysis_permission (core.tests.LexicalAcceptanceTests.test_tc11_analysis_permission) ... ok
+test_tc12_stopword_enabled_disabled (core.tests.LexicalAcceptanceTests.test_tc12_stopword_enabled_disabled) ... ok
+test_tc13_analysis_failure_preserves_previous (core.tests.LexicalAcceptanceTests.test_tc13_analysis_failure_preserves_previous) ... ok
+test_tc29_personal_deduplication (core.tests.PersonalStudyAcceptanceTests.test_tc29_personal_deduplication) ... ok
+test_tc30_study_source_validation (core.tests.PersonalStudyAcceptanceTests.test_tc30_study_source_validation) ... ok
+test_tc31_personal_read_isolation (core.tests.PersonalStudyAcceptanceTests.test_tc31_personal_read_isolation) ... ok
+test_tc32_remove_ownership_and_cascade (core.tests.PersonalStudyAcceptanceTests.test_tc32_remove_ownership_and_cascade) ... ok
+test_tc33_due_list_isolation_and_uuid (core.tests.PersonalStudyAcceptanceTests.test_tc33_due_list_isolation_and_uuid) ... ok
+test_tc34_not_due_review_rejected (core.tests.PersonalStudyAcceptanceTests.test_tc34_not_due_review_rejected) ... ok
+test_tc35_review_rating_schedule_and_logs (core.tests.PersonalStudyAcceptanceTests.test_tc35_review_rating_schedule_and_logs) ... ok
+test_tc36_invalid_review_inputs (core.tests.PersonalStudyAcceptanceTests.test_tc36_invalid_review_inputs) ... ok
+test_tc37_review_idempotency (core.tests.PersonalStudyAcceptanceTests.test_tc37_review_idempotency) ... ok
+test_tc38_uuid_bound_to_request (core.tests.PersonalStudyAcceptanceTests.test_tc38_uuid_bound_to_request) ... ok
+test_tc39_review_other_owner_denied (core.tests.PersonalStudyAcceptanceTests.test_tc39_review_other_owner_denied) ... ok
+test_tc40_history_isolation (core.tests.PersonalStudyAcceptanceTests.test_tc40_history_isolation) ... ok
+test_tc41_safe_return_redirect (core.tests.PersonalStudyAcceptanceTests.test_tc41_safe_return_redirect) ... ok
+
+======================================================================
+FAIL: test_tc57_json_reimport_deduplication (core.tests.ImportAndSecurityAcceptanceTests.test_tc57_json_reimport_deduplication) (attempt=2)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "E:\CompanyCourse\vocab_learning\core\tests.py", line 810, in test_tc57_json_reimport_deduplication
+    self.assertEqual(response.status_code, 302, "Repeated valid import must deduplicate existing material")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 200 != 302 : Repeated valid import must deduplicate existing material
+
+----------------------------------------------------------------------
+Ran 60 tests in 1.367s
+
+FAILED (failures=1)
+Destroying test database for alias 'default' ('file:memorydb_default?mode=memory&cache=shared')...
+
+===== EXIT CODE =====
+1
+===== SUMMARY =====
+{"PASS": 59, "FAIL": 1, "ERROR": 0, "NOT_RUN": 0, "UNKNOWN": 0}
+
+===== RUN 2（主会话业务修复后全量复测，首轮记录保留）=====
+开始：2026-10-02T03:18:59.568927+00:00
+命令：E:\CompanyCourse\vocab_learning\.venv\Scripts\python.exe manage.py test core --verbosity 2
+版本：{"python": "3.13.7", "django": "5.2.17", "sqlite": "3.50.4", "interpreter": "E:\\CompanyCourse\\vocab_learning\\.venv\\Scripts\\python.exe"}
+修复：主会话修复core/views.py重复短语导入：已有Phrase的pk赋给候选实例，full_clean完整验证，已有资料不覆盖。测试断言未放宽。
+===== 完整实际 STDOUT =====
+Found 60 test(s).
+Operations to perform:
+  Synchronize unmigrated apps: messages, staticfiles
+  Apply all migrations: admin, auth, contenttypes, core, sessions
+Synchronizing apps without migrations:
+  Creating tables...
+    Running deferred SQL...
+Running migrations:
+  Applying contenttypes.0001_initial... OK
+  Applying contenttypes.0002_remove_content_type_name... OK
+  Applying auth.0001_initial... OK
+  Applying auth.0002_alter_permission_name_max_length... OK
+  Applying auth.0003_alter_user_email_max_length... OK
+  Applying auth.0004_alter_user_username_opts... OK
+  Applying auth.0005_alter_user_last_login_null... OK
+  Applying auth.0006_require_contenttypes_0002... OK
+  Applying auth.0007_alter_validators_add_error_messages... OK
+  Applying auth.0008_alter_user_username_max_length... OK
+  Applying auth.0009_alter_user_last_name_max_length... OK
+  Applying auth.0010_alter_group_name_max_length... OK
+  Applying auth.0011_update_proxy_permissions... OK
+  Applying auth.0012_alter_user_first_name_max_length... OK
+  Applying core.0001_initial... OK
+  Applying admin.0001_initial... OK
+  Applying admin.0002_logentry_remove_auto_add... OK
+  Applying admin.0003_logentry_add_action_flag_choices... OK
+  Applying core.0002_alter_stopword_text_alter_word_lemma... OK
+  Applying sessions.0001_initial... OK
+System check identified no issues (0 silenced).
+
+===== 完整实际 STDERR =====
+Creating test database for alias 'default' ('file:memorydb_default?mode=memory&cache=shared')...
+test_tc20_registration_no_privilege_escalation (core.tests.AuthorizationAcceptanceTests.test_tc20_registration_no_privilege_escalation) ... ok
+test_tc21_anonymous_login_required (core.tests.AuthorizationAcceptanceTests.test_tc21_anonymous_login_required) ... ok
+test_tc22_student_management_denied (core.tests.AuthorizationAcceptanceTests.test_tc22_student_management_denied) ... ok
+test_tc23_admin_word_crud (core.tests.AuthorizationAcceptanceTests.test_tc23_admin_word_crud) ... ok
+test_tc24_admin_paper_crud (core.tests.AuthorizationAcceptanceTests.test_tc24_admin_paper_crud) ... ok
+test_tc25_content_edit_invalidates_analysis (core.tests.AuthorizationAcceptanceTests.test_tc25_content_edit_invalidates_analysis) ... ok
+test_tc26_admin_related_material_and_stopwords (core.tests.AuthorizationAcceptanceTests.test_tc26_admin_related_material_and_stopwords) ... ok
+test_tc27_mutations_require_post (core.tests.AuthorizationAcceptanceTests.test_tc27_mutations_require_post) ... ok
+test_tc28_related_material_validation (core.tests.AuthorizationAcceptanceTests.test_tc28_related_material_validation) ... ok
+test_tc14_strict_history_scope (core.tests.HistoryAcceptanceTests.test_tc14_strict_history_scope) ... ok
+test_tc15_demo_scope (core.tests.HistoryAcceptanceTests.test_tc15_demo_scope) ... ok
+test_tc16_history_range_aggregation (core.tests.HistoryAcceptanceTests.test_tc16_history_range_aggregation) ... ok
+test_tc17_invalid_history_years (core.tests.HistoryAcceptanceTests.test_tc17_invalid_history_years) ... ok
+test_tc18_draft_comparison_rejected (core.tests.HistoryAcceptanceTests.test_tc18_draft_comparison_rejected) ... ok
+test_tc19_no_history_baseline (core.tests.HistoryAcceptanceTests.test_tc19_no_history_baseline) ... ok
+test_tc42_txt_utf8_bom_success (core.tests.ImportAndSecurityAcceptanceTests.test_tc42_txt_utf8_bom_success) ... ok
+test_tc43_txt_invalid_uploads (core.tests.ImportAndSecurityAcceptanceTests.test_tc43_txt_invalid_uploads) ... ok
+test_tc44_paper_form_year_category (core.tests.ImportAndSecurityAcceptanceTests.test_tc44_paper_form_year_category) ... ok
+test_tc45_json_import_success (core.tests.ImportAndSecurityAcceptanceTests.test_tc45_json_import_success) ... ok
+test_tc46_json_import_transaction_rollback (core.tests.ImportAndSecurityAcceptanceTests.test_tc46_json_import_transaction_rollback) ... ok
+test_tc47_json_invalid_inputs (core.tests.ImportAndSecurityAcceptanceTests.test_tc47_json_invalid_inputs) ... ok
+test_tc48_json_nested_constraint_rollback (core.tests.ImportAndSecurityAcceptanceTests.test_tc48_json_nested_constraint_rollback) ... ok
+test_tc49_csrf_enforced (core.tests.ImportAndSecurityAcceptanceTests.test_tc49_csrf_enforced) ... ok
+test_tc50_html_escaping (core.tests.ImportAndSecurityAcceptanceTests.test_tc50_html_escaping) ... ok
+test_tc51_review_note_escaped (core.tests.ImportAndSecurityAcceptanceTests.test_tc51_review_note_escaped) ... ok
+test_tc52_model_tables_field_counts (core.tests.ImportAndSecurityAcceptanceTests.test_tc52_model_tables_field_counts) ... ok
+test_tc53_sqlite_test_database_isolated (core.tests.ImportAndSecurityAcceptanceTests.test_tc53_sqlite_test_database_isolated) ... ok
+test_tc54_analysis_http_and_search (core.tests.ImportAndSecurityAcceptanceTests.test_tc54_analysis_http_and_search) ... ok
+test_tc55_review_http_idempotency (core.tests.ImportAndSecurityAcceptanceTests.test_tc55_review_http_idempotency) ... ok
+test_tc56_search_and_study_filters (core.tests.ImportAndSecurityAcceptanceTests.test_tc56_search_and_study_filters) ... ok
+test_tc57_json_reimport_deduplication (core.tests.ImportAndSecurityAcceptanceTests.test_tc57_json_reimport_deduplication) ... 
+  test_tc57_json_reimport_deduplication (core.tests.ImportAndSecurityAcceptanceTests.test_tc57_json_reimport_deduplication) (attempt=2) ... FAIL
+test_tc58_same_year_not_history (core.tests.ImportAndSecurityAcceptanceTests.test_tc58_same_year_not_history) ... ok
+test_tc59_all_stop_words (core.tests.ImportAndSecurityAcceptanceTests.test_tc59_all_stop_words) ... ok
+test_tc60_study_service_invalid_user_word (core.tests.ImportAndSecurityAcceptanceTests.test_tc60_study_service_invalid_user_word) ... ok
+test_tc01_rule_inflections (core.tests.LexicalAcceptanceTests.test_tc01_rule_inflections) ... ok
+test_tc02_irregular_forms (core.tests.LexicalAcceptanceTests.test_tc02_irregular_forms) ... ok
+test_tc03_conservative_suffixes (core.tests.LexicalAcceptanceTests.test_tc03_conservative_suffixes) ... ok
+test_tc04_default_stops_and_contractions (core.tests.LexicalAcceptanceTests.test_tc04_default_stops_and_contractions) ... ok
+test_tc05_case_forms_frequency (core.tests.LexicalAcceptanceTests.test_tc05_case_forms_frequency) ... ok
+test_tc06_custom_stop_normalization (core.tests.LexicalAcceptanceTests.test_tc06_custom_stop_normalization) ... ok
+test_tc07_context_limits (core.tests.LexicalAcceptanceTests.test_tc07_context_limits) ... ok
+test_tc08_lexical_invalid_inputs (core.tests.LexicalAcceptanceTests.test_tc08_lexical_invalid_inputs) ... ok
+test_tc09_analysis_persistence (core.tests.LexicalAcceptanceTests.test_tc09_analysis_persistence) ... ok
+test_tc10_repeat_analysis_deduplicates (core.tests.LexicalAcceptanceTests.test_tc10_repeat_analysis_deduplicates) ... ok
+test_tc11_analysis_permission (core.tests.LexicalAcceptanceTests.test_tc11_analysis_permission) ... ok
+test_tc12_stopword_enabled_disabled (core.tests.LexicalAcceptanceTests.test_tc12_stopword_enabled_disabled) ... ok
+test_tc13_analysis_failure_preserves_previous (core.tests.LexicalAcceptanceTests.test_tc13_analysis_failure_preserves_previous) ... ok
+test_tc29_personal_deduplication (core.tests.PersonalStudyAcceptanceTests.test_tc29_personal_deduplication) ... ok
+test_tc30_study_source_validation (core.tests.PersonalStudyAcceptanceTests.test_tc30_study_source_validation) ... ok
+test_tc31_personal_read_isolation (core.tests.PersonalStudyAcceptanceTests.test_tc31_personal_read_isolation) ... ok
+test_tc32_remove_ownership_and_cascade (core.tests.PersonalStudyAcceptanceTests.test_tc32_remove_ownership_and_cascade) ... ok
+test_tc33_due_list_isolation_and_uuid (core.tests.PersonalStudyAcceptanceTests.test_tc33_due_list_isolation_and_uuid) ... ok
+test_tc34_not_due_review_rejected (core.tests.PersonalStudyAcceptanceTests.test_tc34_not_due_review_rejected) ... ok
+test_tc35_review_rating_schedule_and_logs (core.tests.PersonalStudyAcceptanceTests.test_tc35_review_rating_schedule_and_logs) ... ok
+test_tc36_invalid_review_inputs (core.tests.PersonalStudyAcceptanceTests.test_tc36_invalid_review_inputs) ... ok
+test_tc37_review_idempotency (core.tests.PersonalStudyAcceptanceTests.test_tc37_review_idempotency) ... ok
+test_tc38_uuid_bound_to_request (core.tests.PersonalStudyAcceptanceTests.test_tc38_uuid_bound_to_request) ... ok
+test_tc39_review_other_owner_denied (core.tests.PersonalStudyAcceptanceTests.test_tc39_review_other_owner_denied) ... ok
+test_tc40_history_isolation (core.tests.PersonalStudyAcceptanceTests.test_tc40_history_isolation) ... ok
+test_tc41_safe_return_redirect (core.tests.PersonalStudyAcceptanceTests.test_tc41_safe_return_redirect) ... ok
+
+======================================================================
+FAIL: test_tc57_json_reimport_deduplication (core.tests.ImportAndSecurityAcceptanceTests.test_tc57_json_reimport_deduplication) (attempt=2)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "E:\CompanyCourse\vocab_learning\core\tests.py", line 810, in test_tc57_json_reimport_deduplication
+    self.assertEqual(response.status_code, 302, "Repeated valid import must deduplicate existing material")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 200 != 302 : Repeated valid import must deduplicate existing material
+
+----------------------------------------------------------------------
+Ran 60 tests in 1.235s
+
+FAILED (failures=1)
+Destroying test database for alias 'default' ('file:memorydb_default?mode=memory&cache=shared')...
+
+===== EXIT CODE =====
+1
+===== SUMMARY =====
+{"PASS": 59, "FAIL": 1, "ERROR": 0, "NOT_RUN": 0, "UNKNOWN": 0}
+
+===== RUN 3（主会话第二次业务修复后全量复测，前两轮记录保留）=====
+开始：2026-10-02T03:22:27.380309+00:00
+命令：E:\CompanyCourse\vocab_learning\.venv\Scripts\python.exe manage.py test core --verbosity 2
+版本：{"python": "3.13.7", "django": "5.2.17", "sqlite": "3.50.4", "interpreter": "E:\\CompanyCourse\\vocab_learning\\.venv\\Scripts\\python.exe"}
+修复：主会话改用existing Phrase实例逐字段设置候选值，不保存，full_clean完整验证可排除自身pk；只对不存在的新短语save。TC57强化合法重复去重及非法重复字段仍整批回滚。
+===== 完整实际 STDOUT =====
+Found 60 test(s).
+Operations to perform:
+  Synchronize unmigrated apps: messages, staticfiles
+  Apply all migrations: admin, auth, contenttypes, core, sessions
+Synchronizing apps without migrations:
+  Creating tables...
+    Running deferred SQL...
+Running migrations:
+  Applying contenttypes.0001_initial... OK
+  Applying contenttypes.0002_remove_content_type_name... OK
+  Applying auth.0001_initial... OK
+  Applying auth.0002_alter_permission_name_max_length... OK
+  Applying auth.0003_alter_user_email_max_length... OK
+  Applying auth.0004_alter_user_username_opts... OK
+  Applying auth.0005_alter_user_last_login_null... OK
+  Applying auth.0006_require_contenttypes_0002... OK
+  Applying auth.0007_alter_validators_add_error_messages... OK
+  Applying auth.0008_alter_user_username_max_length... OK
+  Applying auth.0009_alter_user_last_name_max_length... OK
+  Applying auth.0010_alter_group_name_max_length... OK
+  Applying auth.0011_update_proxy_permissions... OK
+  Applying auth.0012_alter_user_first_name_max_length... OK
+  Applying core.0001_initial... OK
+  Applying admin.0001_initial... OK
+  Applying admin.0002_logentry_remove_auto_add... OK
+  Applying admin.0003_logentry_add_action_flag_choices... OK
+  Applying core.0002_alter_stopword_text_alter_word_lemma... OK
+  Applying sessions.0001_initial... OK
+System check identified no issues (0 silenced).
+
+===== 完整实际 STDERR =====
+Creating test database for alias 'default' ('file:memorydb_default?mode=memory&cache=shared')...
+test_tc20_registration_no_privilege_escalation (core.tests.AuthorizationAcceptanceTests.test_tc20_registration_no_privilege_escalation) ... ok
+test_tc21_anonymous_login_required (core.tests.AuthorizationAcceptanceTests.test_tc21_anonymous_login_required) ... ok
+test_tc22_student_management_denied (core.tests.AuthorizationAcceptanceTests.test_tc22_student_management_denied) ... ok
+test_tc23_admin_word_crud (core.tests.AuthorizationAcceptanceTests.test_tc23_admin_word_crud) ... ok
+test_tc24_admin_paper_crud (core.tests.AuthorizationAcceptanceTests.test_tc24_admin_paper_crud) ... ok
+test_tc25_content_edit_invalidates_analysis (core.tests.AuthorizationAcceptanceTests.test_tc25_content_edit_invalidates_analysis) ... ok
+test_tc26_admin_related_material_and_stopwords (core.tests.AuthorizationAcceptanceTests.test_tc26_admin_related_material_and_stopwords) ... ok
+test_tc27_mutations_require_post (core.tests.AuthorizationAcceptanceTests.test_tc27_mutations_require_post) ... ok
+test_tc28_related_material_validation (core.tests.AuthorizationAcceptanceTests.test_tc28_related_material_validation) ... ok
+test_tc14_strict_history_scope (core.tests.HistoryAcceptanceTests.test_tc14_strict_history_scope) ... ok
+test_tc15_demo_scope (core.tests.HistoryAcceptanceTests.test_tc15_demo_scope) ... ok
+test_tc16_history_range_aggregation (core.tests.HistoryAcceptanceTests.test_tc16_history_range_aggregation) ... ok
+test_tc17_invalid_history_years (core.tests.HistoryAcceptanceTests.test_tc17_invalid_history_years) ... ok
+test_tc18_draft_comparison_rejected (core.tests.HistoryAcceptanceTests.test_tc18_draft_comparison_rejected) ... ok
+test_tc19_no_history_baseline (core.tests.HistoryAcceptanceTests.test_tc19_no_history_baseline) ... ok
+test_tc42_txt_utf8_bom_success (core.tests.ImportAndSecurityAcceptanceTests.test_tc42_txt_utf8_bom_success) ... ok
+test_tc43_txt_invalid_uploads (core.tests.ImportAndSecurityAcceptanceTests.test_tc43_txt_invalid_uploads) ... ok
+test_tc44_paper_form_year_category (core.tests.ImportAndSecurityAcceptanceTests.test_tc44_paper_form_year_category) ... ok
+test_tc45_json_import_success (core.tests.ImportAndSecurityAcceptanceTests.test_tc45_json_import_success) ... ok
+test_tc46_json_import_transaction_rollback (core.tests.ImportAndSecurityAcceptanceTests.test_tc46_json_import_transaction_rollback) ... ok
+test_tc47_json_invalid_inputs (core.tests.ImportAndSecurityAcceptanceTests.test_tc47_json_invalid_inputs) ... ok
+test_tc48_json_nested_constraint_rollback (core.tests.ImportAndSecurityAcceptanceTests.test_tc48_json_nested_constraint_rollback) ... ok
+test_tc49_csrf_enforced (core.tests.ImportAndSecurityAcceptanceTests.test_tc49_csrf_enforced) ... ok
+test_tc50_html_escaping (core.tests.ImportAndSecurityAcceptanceTests.test_tc50_html_escaping) ... ok
+test_tc51_review_note_escaped (core.tests.ImportAndSecurityAcceptanceTests.test_tc51_review_note_escaped) ... ok
+test_tc52_model_tables_field_counts (core.tests.ImportAndSecurityAcceptanceTests.test_tc52_model_tables_field_counts) ... ok
+test_tc53_sqlite_test_database_isolated (core.tests.ImportAndSecurityAcceptanceTests.test_tc53_sqlite_test_database_isolated) ... ok
+test_tc54_analysis_http_and_search (core.tests.ImportAndSecurityAcceptanceTests.test_tc54_analysis_http_and_search) ... ok
+test_tc55_review_http_idempotency (core.tests.ImportAndSecurityAcceptanceTests.test_tc55_review_http_idempotency) ... ok
+test_tc56_search_and_study_filters (core.tests.ImportAndSecurityAcceptanceTests.test_tc56_search_and_study_filters) ... ok
+test_tc57_json_reimport_deduplication (core.tests.ImportAndSecurityAcceptanceTests.test_tc57_json_reimport_deduplication) ... ok
+test_tc58_same_year_not_history (core.tests.ImportAndSecurityAcceptanceTests.test_tc58_same_year_not_history) ... ok
+test_tc59_all_stop_words (core.tests.ImportAndSecurityAcceptanceTests.test_tc59_all_stop_words) ... ok
+test_tc60_study_service_invalid_user_word (core.tests.ImportAndSecurityAcceptanceTests.test_tc60_study_service_invalid_user_word) ... ok
+test_tc01_rule_inflections (core.tests.LexicalAcceptanceTests.test_tc01_rule_inflections) ... ok
+test_tc02_irregular_forms (core.tests.LexicalAcceptanceTests.test_tc02_irregular_forms) ... ok
+test_tc03_conservative_suffixes (core.tests.LexicalAcceptanceTests.test_tc03_conservative_suffixes) ... ok
+test_tc04_default_stops_and_contractions (core.tests.LexicalAcceptanceTests.test_tc04_default_stops_and_contractions) ... ok
+test_tc05_case_forms_frequency (core.tests.LexicalAcceptanceTests.test_tc05_case_forms_frequency) ... ok
+test_tc06_custom_stop_normalization (core.tests.LexicalAcceptanceTests.test_tc06_custom_stop_normalization) ... ok
+test_tc07_context_limits (core.tests.LexicalAcceptanceTests.test_tc07_context_limits) ... ok
+test_tc08_lexical_invalid_inputs (core.tests.LexicalAcceptanceTests.test_tc08_lexical_invalid_inputs) ... ok
+test_tc09_analysis_persistence (core.tests.LexicalAcceptanceTests.test_tc09_analysis_persistence) ... ok
+test_tc10_repeat_analysis_deduplicates (core.tests.LexicalAcceptanceTests.test_tc10_repeat_analysis_deduplicates) ... ok
+test_tc11_analysis_permission (core.tests.LexicalAcceptanceTests.test_tc11_analysis_permission) ... ok
+test_tc12_stopword_enabled_disabled (core.tests.LexicalAcceptanceTests.test_tc12_stopword_enabled_disabled) ... ok
+test_tc13_analysis_failure_preserves_previous (core.tests.LexicalAcceptanceTests.test_tc13_analysis_failure_preserves_previous) ... ok
+test_tc29_personal_deduplication (core.tests.PersonalStudyAcceptanceTests.test_tc29_personal_deduplication) ... ok
+test_tc30_study_source_validation (core.tests.PersonalStudyAcceptanceTests.test_tc30_study_source_validation) ... ok
+test_tc31_personal_read_isolation (core.tests.PersonalStudyAcceptanceTests.test_tc31_personal_read_isolation) ... ok
+test_tc32_remove_ownership_and_cascade (core.tests.PersonalStudyAcceptanceTests.test_tc32_remove_ownership_and_cascade) ... ok
+test_tc33_due_list_isolation_and_uuid (core.tests.PersonalStudyAcceptanceTests.test_tc33_due_list_isolation_and_uuid) ... ok
+test_tc34_not_due_review_rejected (core.tests.PersonalStudyAcceptanceTests.test_tc34_not_due_review_rejected) ... ok
+test_tc35_review_rating_schedule_and_logs (core.tests.PersonalStudyAcceptanceTests.test_tc35_review_rating_schedule_and_logs) ... ok
+test_tc36_invalid_review_inputs (core.tests.PersonalStudyAcceptanceTests.test_tc36_invalid_review_inputs) ... ok
+test_tc37_review_idempotency (core.tests.PersonalStudyAcceptanceTests.test_tc37_review_idempotency) ... ok
+test_tc38_uuid_bound_to_request (core.tests.PersonalStudyAcceptanceTests.test_tc38_uuid_bound_to_request) ... ok
+test_tc39_review_other_owner_denied (core.tests.PersonalStudyAcceptanceTests.test_tc39_review_other_owner_denied) ... ok
+test_tc40_history_isolation (core.tests.PersonalStudyAcceptanceTests.test_tc40_history_isolation) ... ok
+test_tc41_safe_return_redirect (core.tests.PersonalStudyAcceptanceTests.test_tc41_safe_return_redirect) ... ok
+
+----------------------------------------------------------------------
+Ran 60 tests in 1.223s
+
+OK
+Destroying test database for alias 'default' ('file:memorydb_default?mode=memory&cache=shared')...
+
+===== EXIT CODE =====
+0
+===== SUMMARY =====
+{"PASS": 60, "FAIL": 0, "ERROR": 0, "NOT_RUN": 0, "UNKNOWN": 0}

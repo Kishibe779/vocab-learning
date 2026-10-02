@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}到期复习{% endblock %}
+{% block eyebrow %}SPACED PRACTICE / 间隔复习{% endblock %}
+{% block page_title %}再一次相遇，加深一点记忆。{% endblock %}
+{% block page_description %}{{ today|date:'Y年m月d日' }} · 先尝试回忆，再展开释义。请根据真实记忆情况给出反馈。{% endblock %}
+{% block page_actions %}<a class="button button-outline" href="{% url 'study_list' %}">我的词表</a><a class="button button-outline" href="{% url 'review_history' %}">复习记录</a>{% endblock %}
+{% block content %}
+<aside class="review-instruction"><span class="instruction-marker" aria-hidden="true">→</span><p>先看词元并回忆含义，再点击“展开释义核对”。每个词独立提交；提交成功后由服务端更新等级与下一次复习时间。</p></aside>
+<div class="review-list">
+{% for item in items %}
+<article class="review-card" aria-labelledby="review-word-{{ item.pk }}"><div class="review-card-top"><span class="eyebrow">RECALL / 主动回忆</span><p class="item-meta">{{ item.get_status_display }} · 当前等级 <span class="numeric">{{ item.level }}</span></p></div><h2 class="review-lemma" id="review-word-{{ item.pk }}" lang="en">{{ item.word.lemma }}</h2><p class="review-pos">{{ item.word.get_pos_display|default:item.word.pos|default:'词性尚未录入' }}</p><details class="review-answer"><summary>展开释义核对 <span aria-hidden="true">＋</span></summary><div class="review-answer-body"><p>{{ item.word.meaning|default:'释义尚未录入'|linebreaksbr }}</p>{% if not item.word.meaning and is_admin %}<a class="quiet-link" href="{% url 'word_edit' item.word.pk %}">补充释义 →</a>{% endif %}<p class="small-print">词根 / 词缀：{{ item.word.root|default:'—' }}</p><a class="quiet-link" href="{% url 'word_detail' item.word.pk %}">查看关联词与例句 →</a></div></details><form class="review-feedback" method="post" action="{% url 'review_submit' item.pk %}">{% csrf_token %}<input type="hidden" name="token" value="{{ item.review_token }}"><div class="review-note"><label for="review-note-{{ item.pk }}">本次笔记 <span class="muted">（选填）</span></label><textarea id="review-note-{{ item.pk }}" name="note" rows="2" maxlength="1000" placeholder="例如：易混淆的词义，或帮助记忆的语境"></textarea></div><fieldset class="rating-fieldset"><legend>这次记得怎么样？</legend><div class="rating-buttons"><button class="rating-button rating-again" type="submit" name="rating" value="again"><strong>忘记了</strong><span>需要重新学习</span></button><button class="rating-button rating-hard" type="submit" name="rating" value="hard"><strong>有些困难</strong><span>回忆不够顺畅</span></button><button class="rating-button rating-good" type="submit" name="rating" value="good"><strong>记住了</strong><span>能够正确回忆</span></button><button class="rating-button rating-easy" type="submit" name="rating" value="easy"><strong>很轻松</strong><span>迅速且准确</span></button></div></fieldset></form></article>
+{% empty %}
+<section class="panel"><div class="empty-state review-empty"><span class="empty-number" lang="en">A moment to let it settle.</span><h2>当前没有到期词汇</h2><p>可能尚未加入学习词汇，也可能已完成本次复习。你可以继续阅读，或查看词表中的下一次复习安排。</p><div class="empty-actions"><a class="button button-primary" href="{% url 'paper_list' %}">继续阅读</a><a class="button button-outline" href="{% url 'study_list' %}">查看我的词表</a></div></div></section>
+{% endfor %}
+</div>
+<aside class="small-print">忘记也是学习的一部分。反馈用于调整间隔，不是考试成绩；没有释义的词汇请结合已有语境判断，不要将空缺信息当作答案。</aside>
+{% endblock %}

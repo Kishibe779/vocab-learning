@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block title %}{{ title|default:'编辑资料' }}{% endblock %}
+{% block eyebrow %}EDITORIAL / 资料编辑{% endblock %}
+{% block page_title %}{{ title|default:'编辑资料' }}{% endblock %}
+{% block page_description %}{{ subtitle|default:'请核对内容与来源，带星号或标记为必填的字段不可留空。' }}{% endblock %}
+{% block page_actions %}{% if back_url %}<a class="button button-outline" href="{{ back_url }}">返回</a>{% endif %}{% endblock %}
+{% block content %}
+<section class="panel form-panel" aria-label="{{ title|default:'资料' }}表单"><form class="editor-form" method="post" enctype="multipart/form-data">{% csrf_token %}{{ form.as_div }}<div class="form-actions"><button class="button button-primary" type="submit">保存内容 <span aria-hidden="true">→</span></button>{% if back_url %}<a class="button button-plain" href="{{ back_url }}">取消</a>{% endif %}</div></form></section>
+<aside class="small-print">释义、例句与来源应如实填写；暂未确认的内容请留空，不用推测补齐。</aside>
+{% endblock %}

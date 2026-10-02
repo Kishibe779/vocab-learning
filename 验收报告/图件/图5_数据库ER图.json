@@ -1,0 +1,291 @@
+{
+  "entities": {
+    "User": [
+      "PK id；UQ username",
+      "role / display_name",
+      "password（哈希） / timestamps"
+    ],
+    "Paper": [
+      "PK id；FK created_by→User（可空）",
+      "title / year / category / content",
+      "source / is_demo / status / counts"
+    ],
+    "Word": [
+      "PK id；UQ lemma",
+      "meaning / pos / root",
+      "notes / source / timestamps"
+    ],
+    "PaperWord": [
+      "PK id；FK paper→Paper，word→Word",
+      "count / forms / contexts / total_tokens",
+      "UQ (paper, word)"
+    ],
+    "WordRelation": [
+      "PK id；FK word与related_word→Word",
+      "relation_type / explanation / source",
+      "UQ (word, related_word, type)"
+    ],
+    "Phrase": [
+      "PK id；FK word→Word",
+      "text / meaning / example / translation",
+      "source / timestamps；UQ (word, text)"
+    ],
+    "UsageExample": [
+      "PK id；FK word→Word",
+      "FK phrase→Phrase，paper→Paper（可空）",
+      "text / translation / source / kind"
+    ],
+    "StopWord": [
+      "PK id；UQ text；FK created_by→User",
+      "reason / enabled",
+      "created_at / updated_at"
+    ],
+    "StudyItem": [
+      "PK id；FK user→User，word→Word",
+      "FK source_paper→Paper（可空）",
+      "status / level / due；UQ (user, word)"
+    ],
+    "ReviewLog": [
+      "PK id；FK study_item→StudyItem",
+      "rating / levels / next_review_at / note",
+      "reviewed_at；UQ idempotency_key"
+    ]
+  },
+  "positions": {
+    "Paper": [
+      800,
+      120
+    ],
+    "PaperWord": [
+      800,
+      450
+    ],
+    "Word": [
+      800,
+      780
+    ],
+    "WordRelation": [
+      60,
+      780
+    ],
+    "Phrase": [
+      1540,
+      780
+    ],
+    "UsageExample": [
+      1540,
+      120
+    ],
+    "User": [
+      60,
+      120
+    ],
+    "StopWord": [
+      60,
+      450
+    ],
+    "StudyItem": [
+      800,
+      1200
+    ],
+    "ReviewLog": [
+      800,
+      1610
+    ]
+  },
+  "relations": [
+    [
+      [
+        [
+          1050,
+          325
+        ],
+        [
+          1050,
+          450
+        ]
+      ],
+      "1 : N"
+    ],
+    [
+      [
+        [
+          1050,
+          780
+        ],
+        [
+          1050,
+          655
+        ]
+      ],
+      "1 : N"
+    ],
+    [
+      [
+        [
+          800,
+          875
+        ],
+        [
+          560,
+          875
+        ]
+      ],
+      "1 : N（两端）"
+    ],
+    [
+      [
+        [
+          1300,
+          875
+        ],
+        [
+          1540,
+          875
+        ]
+      ],
+      "1 : N"
+    ],
+    [
+      [
+        [
+          1790,
+          780
+        ],
+        [
+          1790,
+          325
+        ]
+      ],
+      "0..1 : N"
+    ],
+    [
+      [
+        [
+          1300,
+          820
+        ],
+        [
+          1440,
+          820
+        ],
+        [
+          1440,
+          220
+        ],
+        [
+          1540,
+          220
+        ]
+      ],
+      "1 : N"
+    ],
+    [
+      [
+        [
+          1300,
+          200
+        ],
+        [
+          1540,
+          200
+        ]
+      ],
+      "0..1 : N 来源"
+    ],
+    [
+      [
+        [
+          310,
+          325
+        ],
+        [
+          310,
+          450
+        ]
+      ],
+      "0..1 : N 创建"
+    ],
+    [
+      [
+        [
+          560,
+          200
+        ],
+        [
+          800,
+          200
+        ]
+      ],
+      "0..1 : N 创建"
+    ],
+    [
+      [
+        [
+          1050,
+          985
+        ],
+        [
+          1050,
+          1200
+        ]
+      ],
+      "1 : N"
+    ],
+    [
+      [
+        [
+          310,
+          325
+        ],
+        [
+          680,
+          325
+        ],
+        [
+          680,
+          1260
+        ],
+        [
+          800,
+          1260
+        ]
+      ],
+      "1 : N 所属"
+    ],
+    [
+      [
+        [
+          1250,
+          325
+        ],
+        [
+          1380,
+          325
+        ],
+        [
+          1380,
+          1300
+        ],
+        [
+          1300,
+          1300
+        ]
+      ],
+      "0..1 : N 来源"
+    ],
+    [
+      [
+        [
+          1050,
+          1405
+        ],
+        [
+          1050,
+          1610
+        ]
+      ],
+      "1 : N"
+    ]
+  ]
+}

@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %}导入词库{% endblock %}
+{% block eyebrow %}LEXICON IMPORT / 词库导入{% endblock %}
+{% block page_title %}导入 JSON 词库{% endblock %}
+{% block page_description %}通过本地 JSON 文件补充词汇资料。导入前请核对数据结构、内容与来源。{% endblock %}
+{% block page_actions %}<a class="button button-outline" href="{% url 'word_list' %}">返回词汇索引</a>{% endblock %}
+{% block content %}
+<div class="import-layout"><section class="panel form-panel" aria-labelledby="import-title"><div class="section-heading"><div><p class="eyebrow">LOCAL FILE / 本地文件</p><h2 id="import-title">选择词库文件</h2></div></div><form class="editor-form" method="post" enctype="multipart/form-data" action="{% url 'lexicon_import' %}">{% csrf_token %}{{ form.as_div }}<div class="form-actions"><button class="button button-primary" type="submit">校验并导入 <span aria-hidden="true">→</span></button><a class="button button-plain" href="{% url 'word_list' %}">取消</a></div></form></section><aside class="import-note"><p class="eyebrow">BEFORE YOU IMPORT</p><h2>让词库内容可追溯。</h2><ol><li>只选择可信的本地 JSON 文件，字段格式以表单帮助信息为准。</li><li>核对释义、关联词、短语和例句的准确性，不以空缺信息推测事实。</li><li>填写可识别的来源；导入后的内容可在词汇详情页核查。</li><li>服务端校验失败时，请按错误提示修正文件，再次提交。</li></ol><p class="small-print">导入不调用外部大模型，也不会自动编造缺失释义。</p></aside></div>
+<section class="panel form-panel"><h2>JSON 格式示例</h2><p>顶层为数组；lemma 与 source 必填。关联词必须已存在或在同一批次定义，支持 relations、phrases 和 examples。完整格式见项目 README。</p><pre class="paper-text">[
+  {
+    "lemma": "learn",
+    "meaning": "学习；学会",
+    "source": "原创教学演示",
+    "phrases": [{"text": "learn from experience", "meaning": "从经验中学习", "example": "Students learn from experience.", "translation": "学生从经验中学习。"}],
+    "examples": [{"text": "We learn new skills through practice.", "translation": "我们通过实践学习新技能。"}]
+  }
+]</pre></section>
+{% endblock %}

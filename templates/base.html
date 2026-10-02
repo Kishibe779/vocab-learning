@@ -1,0 +1,82 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>{% block title %}学习概览{% endblock %} · 词序 LEXIS</title>
+  <link rel="stylesheet" href="{% static 'site.css' %}">
+  <script src="{% static 'site.js' %}" defer></script>
+</head>
+<body class="{% if user.is_authenticated %}is-signed-in{% else %}is-auth{% endif %}">
+  <a class="skip-link" href="#main-content">跳转到主要内容</a>
+  {% if user.is_authenticated %}
+  <div class="mobile-masthead">
+    <a class="mobile-brand" href="{% url 'dashboard' %}">词序 <span lang="en">/ LEXIS</span></a>
+    <button class="nav-toggle button button-small button-outline" type="button" aria-controls="site-navigation" aria-expanded="false" hidden>展开导航</button>
+  </div>
+  <aside class="sidebar" id="site-navigation" aria-label="主导航">
+    <a class="brand" href="{% url 'dashboard' %}" aria-label="词序，返回学习概览">
+      <span class="brand-mark" aria-hidden="true">词</span>
+      <span class="brand-name">词序 <span lang="en">/ LEXIS</span></span>
+      <span class="brand-caption">英语词汇学习与复习系统</span>
+    </a>
+    <div class="sidebar-rule"></div>
+    {% with current=request.resolver_match.url_name %}
+    <nav>
+      <p class="nav-group-label">学习工作台 <span lang="en">WORKSPACE</span></p>
+      <a class="nav-link {% if current == 'dashboard' %}is-active{% endif %}" href="{% url 'dashboard' %}" {% if current == 'dashboard' %}aria-current="page"{% endif %}><span class="nav-index" aria-hidden="true">01</span>学习概览</a>
+      <a class="nav-link {% if current == 'paper_list' or current == 'paper_detail' or current == 'paper_compare' or current == 'paper_create' or current == 'paper_edit' %}is-active{% endif %}" href="{% url 'paper_list' %}" {% if current == 'paper_list' %}aria-current="page"{% endif %}><span class="nav-index" aria-hidden="true">02</span>阅读资料</a>
+      <a class="nav-link {% if current == 'word_list' or current == 'word_detail' or current == 'word_create' or current == 'word_edit' or current == 'relation_create' or current == 'phrase_create' or current == 'example_create' or current == 'lexicon_import' %}is-active{% endif %}" href="{% url 'word_list' %}" {% if current == 'word_list' %}aria-current="page"{% endif %}><span class="nav-index" aria-hidden="true">03</span>词汇索引</a>
+      <p class="nav-group-label nav-group-spaced">个人学习 <span lang="en">PRACTICE</span></p>
+      <a class="nav-link {% if current == 'study_list' %}is-active{% endif %}" href="{% url 'study_list' %}" {% if current == 'study_list' %}aria-current="page"{% endif %}><span class="nav-index" aria-hidden="true">04</span>我的词表</a>
+      <a class="nav-link {% if current == 'review_list' %}is-active{% endif %}" href="{% url 'review_list' %}" {% if current == 'review_list' %}aria-current="page"{% endif %}><span class="nav-index" aria-hidden="true">05</span>到期复习</a>
+      <a class="nav-link {% if current == 'review_history' %}is-active{% endif %}" href="{% url 'review_history' %}" {% if current == 'review_history' %}aria-current="page"{% endif %}><span class="nav-index" aria-hidden="true">06</span>复习记录</a>
+      {% if is_admin %}
+      <p class="nav-group-label nav-group-spaced">资料管理 <span lang="en">EDITORIAL</span></p>
+      <a class="nav-link {% if current == 'stopword_list' or current == 'stopword_create' %}is-active{% endif %}" href="{% url 'stopword_list' %}" {% if current == 'stopword_list' %}aria-current="page"{% endif %}><span class="nav-index" aria-hidden="true">07</span>停用词管理</a>
+      <a class="nav-link" href="{% url 'admin:index' %}"><span class="nav-index" aria-hidden="true">↗</span>Django 管理后台</a>
+      {% endif %}
+    </nav>
+    {% endwith %}
+    <div class="sidebar-bottom">
+      <p class="sidebar-note">从语境出发。<br>让每一次复习有所积累。</p>
+      <div class="account-block">
+        <span class="account-avatar" aria-hidden="true">{{ user.username|first|upper }}</span>
+        <div class="account-copy"><strong>{{ user.username }}</strong><span>{% if is_admin %}资料管理员{% else %}学习者{% endif %}</span></div>
+        <form method="post" action="{% url 'logout' %}">{% csrf_token %}<button class="text-button" type="submit">退出</button></form>
+      </div>
+    </div>
+  </aside>
+  {% else %}
+  <header class="guest-masthead"><a class="guest-brand" href="{% url 'login' %}">词序 <span lang="en">/ LEXIS</span></a><span>英语词汇学习与复习系统</span></header>
+  {% endif %}
+  <div class="main-shell">
+    <main id="main-content" tabindex="-1">
+      {% if messages %}
+      <div class="message-stack" aria-label="操作反馈">
+        {% for message in messages %}
+        <div class="message {% if message.tags %}message-{{ message.tags }}{% endif %}" role="{% if 'error' in message.tags %}alert{% else %}status{% endif %}"><span class="message-label">{% if 'error' in message.tags %}未能完成{% elif 'success' in message.tags %}操作完成{% elif 'warning' in message.tags %}请注意{% else %}提示{% endif %}</span><span>{{ message }}</span></div>
+        {% endfor %}
+      </div>
+      {% endif %}
+      {% block page_header %}
+      <header class="page-header">
+        <div class="page-heading">
+          <p class="eyebrow">{% block eyebrow %}LEXIS · 学习工作台{% endblock %}</p>
+          <h1>{% block page_title %}学习概览{% endblock %}</h1>
+          <p class="page-description">{% block page_description %}在真实语境中认识词汇，在持续复习中建立记忆。{% endblock %}</p>
+        </div>
+        <div class="page-actions">{% block page_actions %}{% endblock %}</div>
+      </header>
+      {% endblock %}
+      {% block content %}{% endblock %}
+    </main>
+    <footer class="site-footer">
+      <span class="footer-brand" lang="en">LEXIS / A VOCABULARY NOTEBOOK</span>
+      <span>原创演示资料不代表真实考研试卷。</span>
+    </footer>
+  </div>
+</body>
+</html>

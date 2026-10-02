@@ -1,0 +1,43 @@
+程序名称：词序——英语词汇学习与复习管理系统
+程序目录：E:\CompanyCourse\vocab_learning
+主程序文件：manage.py
+开发语言：Python，使用 Django 框架。
+
+本文件为首次启动说明；实际测试和课程设计报告待项目运行后补充。
+
+安装条件：Python 3.13；Django、nltk、python-dotenv、mysqlclient（从 PyPI 安装）。
+数据库：默认 SQLite 本地文件，可通过项目 .env 切换 MySQL。默认数据库选择不代表 MySQL 已验证。
+
+首次启动（在项目目录执行）：
+E:\python\python.exe -m venv .venv
+.venv\Scripts\python.exe -m pip install -r requirements.txt
+.venv\Scripts\python.exe manage.py makemigrations core
+.venv\Scripts\python.exe manage.py migrate
+.venv\Scripts\python.exe manage.py seed_demo
+.venv\Scripts\python.exe manage.py runserver 127.0.0.1:8000
+
+访问地址：http://127.0.0.1:8000/
+管理员账号：admin；学生账号：student。
+初始密码由首次 seed_demo 生成并打印，也可事先在本机 .env 配置。
+不要把数据库口令、.env 或个人密码提交到源码仓库或报告。
+停止服务：在运行窗口按 Ctrl+C。
+
+主要操作：
+1. 管理员登录后录入试卷或导入 UTF-8 TXT，填写年份、英语类别和资料来源。
+2. 在试卷详情点击分析，查看有效词频、原词形和上下文。
+3. 查看历年对比，选定历史年份范围；历史基线缺失时不代表真正的历年首次出现。
+4. 管理员维护词义、同词根/同义/反义关系、典型短语和用法摘抄，或导入带来源 JSON。
+5. 学生查询词汇，将词加入个人学习清单。
+6. 进入到期复习，显示释义后选择反馈，查看下一次复习时间和历史。
+7. 管理员维护停用规则、管理用户；学生不能执行管理写操作。
+
+数据说明：初始化试卷与词汇资料均为明确标注的原创演示，不是真实考研试卷或词典引文。
+文本处理说明：首版默认基础规则词形归一，不是完整自然语言模型。
+WordNet 可选引擎需要另外准备本地语料；缺资源明确报错，不自动联网下载。
+
+常见问题：
+找不到 Django：确认使用项目 .venv 解释器并已安装 requirements.txt。
+数据库连接失败：检查 .env 的账号和项目库；勿擅自重置 MySQL 密码或修改其他数据库。
+端口被占用：把启动端口改为8001，并访问对应地址。
+词汇释义为空：分析仅提取词汇，词义/关联/短语资料需管理员录入或导入。
+完整配置与导入格式：见 README.md。

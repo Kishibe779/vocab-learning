@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %}停用词管理{% endblock %}
+{% block eyebrow %}ANALYSIS RULES / 分析规则管理{% endblock %}
+{% block page_title %}让词汇索引，保留有效信息。{% endblock %}
+{% block page_description %}停用词会参与本地规则分析的过滤。请明确填写过滤原因，避免无依据地忽略有效词汇。{% endblock %}
+{% block page_actions %}{% if is_admin %}<a class="button button-primary" href="{% url 'stopword_create' %}">新增停用词 <span aria-hidden="true">＋</span></a>{% endif %}{% endblock %}
+{% block content %}
+{% if is_admin %}
+<section class="panel table-panel" aria-labelledby="stopwords-title"><div class="section-heading"><div><p class="eyebrow">FILTERING REGISTER</p><h2 id="stopwords-title">停用词登记表</h2></div><p class="section-aside">启用与停用均通过明确操作更新</p></div><div class="table-scroll" role="region" aria-label="停用词登记表" tabindex="0"><table><caption class="sr-only">停用词、过滤原因、当前启用状态和切换操作</caption><thead><tr><th scope="col">停用词</th><th scope="col">过滤原因</th><th scope="col">当前状态</th><th scope="col" class="align-right">操作</th></tr></thead><tbody>{% for stopword in stopwords %}<tr><td class="stopword-text" lang="en">{{ stopword.text }}</td><td class="cell-wrap">{{ stopword.reason|default:'原因尚未登记' }}</td><td>{% if stopword.enabled %}<span class="badge badge-green">已启用过滤</span>{% else %}<span class="badge">已停用过滤</span>{% endif %}</td><td class="align-right"><form method="post" action="{% url 'stopword_toggle' stopword.pk %}">{% csrf_token %}<button class="button button-small button-outline nowrap" type="submit">{% if stopword.enabled %}停用过滤{% else %}启用过滤{% endif %}</button></form></td></tr>{% empty %}<tr><td colspan="4"><div class="empty-state"><h3>暂无停用词记录</h3><p>可以录入需要排除的词汇，并说明过滤原因。</p><a class="button button-outline" href="{% url 'stopword_create' %}">新增停用词</a></div></td></tr>{% endfor %}</tbody></table></div></section>
+<aside class="method-note"><span class="method-index" lang="en">RULE NOTE</span><p>分析引擎：{{ analysis_engine_label|default:'本地规则分析引擎' }}。规则变更不应被误认为已有统计自动变化；如需应用到已录入资料，请返回资料页重新执行分析。</p></aside>
+{% else %}<section class="panel"><div class="empty-state"><h2>此页面仅向资料管理员开放</h2><p>学习者可继续阅读资料、浏览词汇或复习个人词表。</p><a class="button button-outline" href="{% url 'dashboard' %}">返回学习概览</a></div></section>{% endif %}
+{% endblock %}

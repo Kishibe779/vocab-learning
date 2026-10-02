@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "dgSpecHash": "DiAx7cPDNH8=",
+  "success": true,
+  "projectFilePath": "E:\\CompanyCourse\\vocab_learning\\验收报告\\生成工具\\DocBuilder.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\LeoQiu\\.nuget\\packages\\documentformat.openxml\\3.5.1\\documentformat.openxml.3.5.1.nupkg.sha512",
+    "C:\\Users\\LeoQiu\\.nuget\\packages\\documentformat.openxml.framework\\3.5.1\\documentformat.openxml.framework.3.5.1.nupkg.sha512",
+    "C:\\Users\\LeoQiu\\.nuget\\packages\\system.commandline\\2.0.5\\system.commandline.2.0.5.nupkg.sha512",
+    "C:\\Users\\LeoQiu\\.nuget\\packages\\system.io.packaging\\8.0.1\\system.io.packaging.8.0.1.nupkg.sha512"
+  ],
+  "logs": []
+}
